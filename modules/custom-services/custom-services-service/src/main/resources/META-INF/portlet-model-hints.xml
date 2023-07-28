@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="custom.services.model.Employee">
+		<field name="employeeId" type="long" />
+		<field name="userName" type="String" />
+	</model>
+</model-hints>

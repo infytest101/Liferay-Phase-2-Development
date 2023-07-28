@@ -1,0 +1,10 @@
+Bundle-Name: custom-services-api
+Bundle-SymbolicName: custom.services.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	custom.services.exception,\
+	custom.services.model,\
+	custom.services.service,\
+	custom.services.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../custom-services-service/service.xml
