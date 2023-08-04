@@ -503,6 +503,7 @@ $(document).ready(function () {
 	});
 	
 	
+		
 	$.ajax({
 		type :'GET',
 		url:'/infy/getRoomType',
