@@ -1,0 +1,4 @@
+Bundle-Name: Room_Master
+Bundle-SymbolicName: Room_Master
+Bundle-Version: 1.0.0
+Export-Package: Room_Master.constants
