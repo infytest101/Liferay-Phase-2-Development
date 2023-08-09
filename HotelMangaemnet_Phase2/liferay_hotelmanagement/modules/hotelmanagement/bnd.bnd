@@ -1,4 +1,0 @@
-Bundle-Name: hotelmanagement
-Bundle-SymbolicName: com.hotelmanagement
-Bundle-Version: 1.0.0
-Export-Package: com.hotelmanagement.constants
