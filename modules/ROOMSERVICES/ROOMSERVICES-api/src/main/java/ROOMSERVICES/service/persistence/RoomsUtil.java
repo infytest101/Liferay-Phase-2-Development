@@ -117,6 +117,64 @@ public class RoomsUtil {
 	}
 
 	/**
+	 * Returns the rooms where roomName = &#63; or throws a <code>NoSuchRoomsException</code> if it could not be found.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms
+	 * @throws NoSuchRoomsException if a matching rooms could not be found
+	 */
+	public static Rooms findByRoomName(String roomName)
+		throws ROOMSERVICES.exception.NoSuchRoomsException {
+
+		return getPersistence().findByRoomName(roomName);
+	}
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	public static Rooms fetchByRoomName(String roomName) {
+		return getPersistence().fetchByRoomName(roomName);
+	}
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	public static Rooms fetchByRoomName(
+		String roomName, boolean useFinderCache) {
+
+		return getPersistence().fetchByRoomName(roomName, useFinderCache);
+	}
+
+	/**
+	 * Removes the rooms where roomName = &#63; from the database.
+	 *
+	 * @param roomName the room name
+	 * @return the rooms that was removed
+	 */
+	public static Rooms removeByRoomName(String roomName)
+		throws ROOMSERVICES.exception.NoSuchRoomsException {
+
+		return getPersistence().removeByRoomName(roomName);
+	}
+
+	/**
+	 * Returns the number of roomses where roomName = &#63;.
+	 *
+	 * @param roomName the room name
+	 * @return the number of matching roomses
+	 */
+	public static int countByRoomName(String roomName) {
+		return getPersistence().countByRoomName(roomName);
+	}
+
+	/**
 	 * Caches the rooms in the entity cache if it is enabled.
 	 *
 	 * @param rooms the rooms
@@ -140,7 +198,7 @@ public class RoomsUtil {
 	 * @param roomId the primary key for the new rooms
 	 * @return the new rooms
 	 */
-	public static Rooms create(int roomId) {
+	public static Rooms create(long roomId) {
 		return getPersistence().create(roomId);
 	}
 
@@ -151,7 +209,7 @@ public class RoomsUtil {
 	 * @return the rooms that was removed
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
-	public static Rooms remove(int roomId)
+	public static Rooms remove(long roomId)
 		throws ROOMSERVICES.exception.NoSuchRoomsException {
 
 		return getPersistence().remove(roomId);
@@ -168,7 +226,7 @@ public class RoomsUtil {
 	 * @return the rooms
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
-	public static Rooms findByPrimaryKey(int roomId)
+	public static Rooms findByPrimaryKey(long roomId)
 		throws ROOMSERVICES.exception.NoSuchRoomsException {
 
 		return getPersistence().findByPrimaryKey(roomId);
@@ -180,7 +238,7 @@ public class RoomsUtil {
 	 * @param roomId the primary key of the rooms
 	 * @return the rooms, or <code>null</code> if a rooms with the primary key could not be found
 	 */
-	public static Rooms fetchByPrimaryKey(int roomId) {
+	public static Rooms fetchByPrimaryKey(long roomId) {
 		return getPersistence().fetchByPrimaryKey(roomId);
 	}
 

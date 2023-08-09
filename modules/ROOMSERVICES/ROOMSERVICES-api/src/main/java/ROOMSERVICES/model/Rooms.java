@@ -36,17 +36,17 @@ public interface Rooms extends PersistedModel, RoomsModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>ROOMSERVICES.model.impl.RoomsImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Rooms, Integer> ROOM_ID_ACCESSOR =
-		new Accessor<Rooms, Integer>() {
+	public static final Accessor<Rooms, Long> ROOM_ID_ACCESSOR =
+		new Accessor<Rooms, Long>() {
 
 			@Override
-			public Integer get(Rooms rooms) {
+			public Long get(Rooms rooms) {
 				return rooms.getRoomId();
 			}
 
 			@Override
-			public Class<Integer> getAttributeClass() {
-				return Integer.class;
+			public Class<Long> getAttributeClass() {
+				return Long.class;
 			}
 
 			@Override

@@ -144,7 +144,7 @@ public class CustomerUtil {
 	 * @param customerId the primary key for the new customer
 	 * @return the new customer
 	 */
-	public static Customer create(int customerId) {
+	public static Customer create(long customerId) {
 		return getPersistence().create(customerId);
 	}
 
@@ -155,7 +155,7 @@ public class CustomerUtil {
 	 * @return the customer that was removed
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
-	public static Customer remove(int customerId)
+	public static Customer remove(long customerId)
 		throws ROOMSERVICES.exception.NoSuchCustomerException {
 
 		return getPersistence().remove(customerId);
@@ -172,7 +172,7 @@ public class CustomerUtil {
 	 * @return the customer
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
-	public static Customer findByPrimaryKey(int customerId)
+	public static Customer findByPrimaryKey(long customerId)
 		throws ROOMSERVICES.exception.NoSuchCustomerException {
 
 		return getPersistence().findByPrimaryKey(customerId);
@@ -184,7 +184,7 @@ public class CustomerUtil {
 	 * @param customerId the primary key of the customer
 	 * @return the customer, or <code>null</code> if a customer with the primary key could not be found
 	 */
-	public static Customer fetchByPrimaryKey(int customerId) {
+	public static Customer fetchByPrimaryKey(long customerId) {
 		return getPersistence().fetchByPrimaryKey(customerId);
 	}
 

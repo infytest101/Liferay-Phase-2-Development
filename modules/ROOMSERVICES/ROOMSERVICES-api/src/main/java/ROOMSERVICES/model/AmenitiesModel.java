@@ -43,28 +43,28 @@ public interface AmenitiesModel extends BaseModel<Amenities> {
 	 *
 	 * @return the primary key of this amenities
 	 */
-	public int getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this amenities.
 	 *
 	 * @param primaryKey the primary key of this amenities
 	 */
-	public void setPrimaryKey(int primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the amenities ID of this amenities.
 	 *
 	 * @return the amenities ID of this amenities
 	 */
-	public int getAmenitiesId();
+	public long getAmenitiesId();
 
 	/**
 	 * Sets the amenities ID of this amenities.
 	 *
 	 * @param amenitiesId the amenities ID of this amenities
 	 */
-	public void setAmenitiesId(int amenitiesId);
+	public void setAmenitiesId(long amenitiesId);
 
 	/**
 	 * Returns the is ac available of this amenities.

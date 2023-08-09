@@ -37,6 +37,7 @@ public class RoomsSoap implements Serializable {
 		soapModel.setRoomTypeId(model.getRoomTypeId());
 		soapModel.setAmenitiesId(model.getAmenitiesId());
 		soapModel.setRoomName(model.getRoomName());
+		soapModel.setPrice(model.getPrice());
 		soapModel.setTotalRoomsAvailable(model.getTotalRoomsAvailable());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setCreateBy(model.getCreateBy());
@@ -86,19 +87,19 @@ public class RoomsSoap implements Serializable {
 	public RoomsSoap() {
 	}
 
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _roomId;
 	}
 
-	public void setPrimaryKey(int pk) {
+	public void setPrimaryKey(long pk) {
 		setRoomId(pk);
 	}
 
-	public int getRoomId() {
+	public long getRoomId() {
 		return _roomId;
 	}
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(long roomId) {
 		_roomId = roomId;
 	}
 
@@ -124,6 +125,14 @@ public class RoomsSoap implements Serializable {
 
 	public void setRoomName(String roomName) {
 		_roomName = roomName;
+	}
+
+	public int getPrice() {
+		return _price;
+	}
+
+	public void setPrice(int price) {
+		_price = price;
 	}
 
 	public int getTotalRoomsAvailable() {
@@ -166,10 +175,11 @@ public class RoomsSoap implements Serializable {
 		_updatedBy = updatedBy;
 	}
 
-	private int _roomId;
+	private long _roomId;
 	private int _roomTypeId;
 	private int _amenitiesId;
 	private String _roomName;
+	private int _price;
 	private int _totalRoomsAvailable;
 	private Date _createDate;
 	private String _createBy;

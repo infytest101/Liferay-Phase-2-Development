@@ -20,8 +20,6 @@ import ROOMSERVICES.model.RoomType;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
-import java.util.Set;
-
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -50,7 +48,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param RoomType the room type
 	 * @return the matching room types
 	 */
-	public java.util.List<RoomType> findByRoomType_RoomType(String RoomType);
+	public java.util.List<RoomType> findByRoomType(String RoomType);
 
 	/**
 	 * Returns a range of all the room types where RoomType = &#63;.
@@ -64,7 +62,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param end the upper bound of the range of room types (not inclusive)
 	 * @return the range of matching room types
 	 */
-	public java.util.List<RoomType> findByRoomType_RoomType(
+	public java.util.List<RoomType> findByRoomType(
 		String RoomType, int start, int end);
 
 	/**
@@ -80,7 +78,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching room types
 	 */
-	public java.util.List<RoomType> findByRoomType_RoomType(
+	public java.util.List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 			orderByComparator);
@@ -99,7 +97,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching room types
 	 */
-	public java.util.List<RoomType> findByRoomType_RoomType(
+	public java.util.List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 			orderByComparator,
@@ -113,7 +111,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @return the first matching room type
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
-	public RoomType findByRoomType_RoomType_First(
+	public RoomType findByRoomType_First(
 			String RoomType,
 			com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 				orderByComparator)
@@ -126,7 +124,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching room type, or <code>null</code> if a matching room type could not be found
 	 */
-	public RoomType fetchByRoomType_RoomType_First(
+	public RoomType fetchByRoomType_First(
 		String RoomType,
 		com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 			orderByComparator);
@@ -139,7 +137,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @return the last matching room type
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
-	public RoomType findByRoomType_RoomType_Last(
+	public RoomType findByRoomType_Last(
 			String RoomType,
 			com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 				orderByComparator)
@@ -152,7 +150,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching room type, or <code>null</code> if a matching room type could not be found
 	 */
-	public RoomType fetchByRoomType_RoomType_Last(
+	public RoomType fetchByRoomType_Last(
 		String RoomType,
 		com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 			orderByComparator);
@@ -160,15 +158,14 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	/**
 	 * Returns the room types before and after the current room type in the ordered set where RoomType = &#63;.
 	 *
-	 * @param roomTypePK the primary key of the current room type
+	 * @param roomTypeId the primary key of the current room type
 	 * @param RoomType the room type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public RoomType[] findByRoomType_RoomType_PrevAndNext(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK,
-			String RoomType,
+	public RoomType[] findByRoomType_PrevAndNext(
+			long roomTypeId, String RoomType,
 			com.liferay.portal.kernel.util.OrderByComparator<RoomType>
 				orderByComparator)
 		throws NoSuchRoomTypeException;
@@ -178,7 +175,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 *
 	 * @param RoomType the room type
 	 */
-	public void removeByRoomType_RoomType(String RoomType);
+	public void removeByRoomType(String RoomType);
 
 	/**
 	 * Returns the number of room types where RoomType = &#63;.
@@ -186,7 +183,7 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @param RoomType the room type
 	 * @return the number of matching room types
 	 */
-	public int countByRoomType_RoomType(String RoomType);
+	public int countByRoomType(String RoomType);
 
 	/**
 	 * Caches the room type in the entity cache if it is enabled.
@@ -205,44 +202,39 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
-	public RoomType create(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK);
+	public RoomType create(long roomTypeId);
 
 	/**
 	 * Removes the room type with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type that was removed
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public RoomType remove(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
-		throws NoSuchRoomTypeException;
+	public RoomType remove(long roomTypeId) throws NoSuchRoomTypeException;
 
 	public RoomType updateImpl(RoomType roomType);
 
 	/**
 	 * Returns the room type with the primary key or throws a <code>NoSuchRoomTypeException</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public RoomType findByPrimaryKey(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
+	public RoomType findByPrimaryKey(long roomTypeId)
 		throws NoSuchRoomTypeException;
 
 	/**
 	 * Returns the room type with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type, or <code>null</code> if a room type with the primary key could not be found
 	 */
-	public RoomType fetchByPrimaryKey(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK);
+	public RoomType fetchByPrimaryKey(long roomTypeId);
 
 	/**
 	 * Returns all the room types.
@@ -311,7 +303,5 @@ public interface RoomTypePersistence extends BasePersistence<RoomType> {
 	 * @return the number of room types
 	 */
 	public int countAll();
-
-	public Set<String> getCompoundPKColumnNames();
 
 }

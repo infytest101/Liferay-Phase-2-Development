@@ -17,13 +17,14 @@ package ROOMSERVICES.model.impl;
 import ROOMSERVICES.model.RoomType;
 import ROOMSERVICES.model.RoomTypeModel;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
-
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -66,27 +67,27 @@ public class RoomTypeModelImpl
 	public static final String TABLE_NAME = "Infy_RoomType";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"roomTypeId", Types.INTEGER}, {"RoomType", Types.VARCHAR}
+		{"roomTypeId", Types.BIGINT}, {"RoomType", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("roomTypeId", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("roomTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("RoomType", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Infy_RoomType (roomTypeId INTEGER not null,RoomType VARCHAR(75) not null,primary key (roomTypeId, RoomType))";
+		"create table Infy_RoomType (roomTypeId LONG not null primary key,RoomType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table Infy_RoomType";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY roomType.id.roomTypeId ASC, roomType.id.RoomType ASC";
+		" ORDER BY roomType.roomTypeId ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY Infy_RoomType.roomTypeId ASC, Infy_RoomType.RoomType ASC";
+		" ORDER BY Infy_RoomType.roomTypeId ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -125,24 +126,23 @@ public class RoomTypeModelImpl
 	}
 
 	@Override
-	public RoomTypePK getPrimaryKey() {
-		return new RoomTypePK(_roomTypeId, _RoomType);
+	public long getPrimaryKey() {
+		return _roomTypeId;
 	}
 
 	@Override
-	public void setPrimaryKey(RoomTypePK primaryKey) {
-		setRoomTypeId(primaryKey.roomTypeId);
-		setRoomType(primaryKey.RoomType);
+	public void setPrimaryKey(long primaryKey) {
+		setRoomTypeId(primaryKey);
 	}
 
 	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new RoomTypePK(_roomTypeId, _RoomType);
+		return _roomTypeId;
 	}
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey((RoomTypePK)primaryKeyObj);
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -247,8 +247,7 @@ public class RoomTypeModelImpl
 
 		attributeGetterFunctions.put("roomTypeId", RoomType::getRoomTypeId);
 		attributeSetterBiConsumers.put(
-			"roomTypeId",
-			(BiConsumer<RoomType, Integer>)RoomType::setRoomTypeId);
+			"roomTypeId", (BiConsumer<RoomType, Long>)RoomType::setRoomTypeId);
 		attributeGetterFunctions.put("RoomType", RoomType::getRoomType);
 		attributeSetterBiConsumers.put(
 			"RoomType", (BiConsumer<RoomType, String>)RoomType::setRoomType);
@@ -260,12 +259,12 @@ public class RoomTypeModelImpl
 	}
 
 	@Override
-	public int getRoomTypeId() {
+	public long getRoomTypeId() {
 		return _roomTypeId;
 	}
 
 	@Override
-	public void setRoomTypeId(int roomTypeId) {
+	public void setRoomTypeId(long roomTypeId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -326,6 +325,19 @@ public class RoomTypeModelImpl
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			0, RoomType.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
 	public RoomType toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, RoomType>
@@ -354,9 +366,17 @@ public class RoomTypeModelImpl
 
 	@Override
 	public int compareTo(RoomType roomType) {
-		RoomTypePK primaryKey = roomType.getPrimaryKey();
+		long primaryKey = roomType.getPrimaryKey();
 
-		return getPrimaryKey().compareTo(primaryKey);
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -371,9 +391,9 @@ public class RoomTypeModelImpl
 
 		RoomType roomType = (RoomType)object;
 
-		RoomTypePK primaryKey = roomType.getPrimaryKey();
+		long primaryKey = roomType.getPrimaryKey();
 
-		if (getPrimaryKey().equals(primaryKey)) {
+		if (getPrimaryKey() == primaryKey) {
 			return true;
 		}
 		else {
@@ -383,7 +403,7 @@ public class RoomTypeModelImpl
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey().hashCode();
+		return (int)getPrimaryKey();
 	}
 
 	/**
@@ -414,8 +434,6 @@ public class RoomTypeModelImpl
 	@Override
 	public CacheModel<RoomType> toCacheModel() {
 		RoomTypeCacheModel roomTypeCacheModel = new RoomTypeCacheModel();
-
-		roomTypeCacheModel.roomTypePK = getPrimaryKey();
 
 		roomTypeCacheModel.roomTypeId = getRoomTypeId();
 
@@ -517,7 +535,7 @@ public class RoomTypeModelImpl
 
 	}
 
-	private int _roomTypeId;
+	private long _roomTypeId;
 	private String _RoomType;
 
 	public <T> T getColumnValue(String columnName) {

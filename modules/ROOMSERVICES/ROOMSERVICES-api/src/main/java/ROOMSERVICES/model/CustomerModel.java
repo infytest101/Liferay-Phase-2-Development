@@ -44,28 +44,28 @@ public interface CustomerModel extends BaseModel<Customer> {
 	 *
 	 * @return the primary key of this customer
 	 */
-	public int getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this customer.
 	 *
 	 * @param primaryKey the primary key of this customer
 	 */
-	public void setPrimaryKey(int primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the customer ID of this customer.
 	 *
 	 * @return the customer ID of this customer
 	 */
-	public int getCustomerId();
+	public long getCustomerId();
 
 	/**
 	 * Sets the customer ID of this customer.
 	 *
 	 * @param customerId the customer ID of this customer
 	 */
-	public void setCustomerId(int customerId);
+	public void setCustomerId(long customerId);
 
 	/**
 	 * Returns the first name of this customer.

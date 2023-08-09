@@ -17,11 +17,14 @@ package ROOMSERVICES.model.impl;
 import ROOMSERVICES.model.Customer;
 import ROOMSERVICES.model.CustomerModel;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -64,7 +67,7 @@ public class CustomerModelImpl
 	public static final String TABLE_NAME = "Infy_Customer";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"customerId", Types.INTEGER}, {"firstName", Types.VARCHAR},
+		{"customerId", Types.BIGINT}, {"firstName", Types.VARCHAR},
 		{"middleName", Types.VARCHAR}, {"lastName", Types.VARCHAR},
 		{"email", Types.VARCHAR}, {"mobile", Types.VARCHAR},
 		{"age", Types.INTEGER}, {"description", Types.VARCHAR}
@@ -74,7 +77,7 @@ public class CustomerModelImpl
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("customerId", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("customerId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("firstName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("middleName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastName", Types.VARCHAR);
@@ -85,7 +88,7 @@ public class CustomerModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Infy_Customer (customerId INTEGER not null primary key,firstName VARCHAR(75) null,middleName VARCHAR(75) null,lastName VARCHAR(75) null,email VARCHAR(75) null,mobile VARCHAR(75) null,age INTEGER,description VARCHAR(75) null)";
+		"create table Infy_Customer (customerId LONG not null primary key,firstName VARCHAR(75) null,middleName VARCHAR(75) null,lastName VARCHAR(75) null,email VARCHAR(75) null,mobile VARCHAR(75) null,age INTEGER,description VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table Infy_Customer";
 
@@ -126,12 +129,12 @@ public class CustomerModelImpl
 	}
 
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _customerId;
 	}
 
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		setCustomerId(primaryKey);
 	}
 
@@ -142,7 +145,7 @@ public class CustomerModelImpl
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Integer)primaryKeyObj).intValue());
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -247,8 +250,7 @@ public class CustomerModelImpl
 
 		attributeGetterFunctions.put("customerId", Customer::getCustomerId);
 		attributeSetterBiConsumers.put(
-			"customerId",
-			(BiConsumer<Customer, Integer>)Customer::setCustomerId);
+			"customerId", (BiConsumer<Customer, Long>)Customer::setCustomerId);
 		attributeGetterFunctions.put("firstName", Customer::getFirstName);
 		attributeSetterBiConsumers.put(
 			"firstName", (BiConsumer<Customer, String>)Customer::setFirstName);
@@ -280,12 +282,12 @@ public class CustomerModelImpl
 	}
 
 	@Override
-	public int getCustomerId() {
+	public long getCustomerId() {
 		return _customerId;
 	}
 
 	@Override
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(long customerId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -446,6 +448,19 @@ public class CustomerModelImpl
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			0, Customer.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
 	public Customer toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, Customer>
@@ -480,7 +495,7 @@ public class CustomerModelImpl
 
 	@Override
 	public int compareTo(Customer customer) {
-		int primaryKey = customer.getPrimaryKey();
+		long primaryKey = customer.getPrimaryKey();
 
 		if (getPrimaryKey() < primaryKey) {
 			return -1;
@@ -505,7 +520,7 @@ public class CustomerModelImpl
 
 		Customer customer = (Customer)object;
 
-		int primaryKey = customer.getPrimaryKey();
+		long primaryKey = customer.getPrimaryKey();
 
 		if (getPrimaryKey() == primaryKey) {
 			return true;
@@ -517,7 +532,7 @@ public class CustomerModelImpl
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey();
+		return (int)getPrimaryKey();
 	}
 
 	/**
@@ -691,7 +706,7 @@ public class CustomerModelImpl
 
 	}
 
-	private int _customerId;
+	private long _customerId;
 	private String _firstName;
 	private String _middleName;
 	private String _lastName;

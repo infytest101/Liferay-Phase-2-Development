@@ -55,7 +55,7 @@ public class CustomerWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Integer customerId = (Integer)attributes.get("customerId");
+		Long customerId = (Long)attributes.get("customerId");
 
 		if (customerId != null) {
 			setCustomerId(customerId);
@@ -120,7 +120,7 @@ public class CustomerWrapper
 	 * @return the customer ID of this customer
 	 */
 	@Override
-	public int getCustomerId() {
+	public long getCustomerId() {
 		return model.getCustomerId();
 	}
 
@@ -190,7 +190,7 @@ public class CustomerWrapper
 	 * @return the primary key of this customer
 	 */
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return model.getPrimaryKey();
 	}
 
@@ -215,7 +215,7 @@ public class CustomerWrapper
 	 * @param customerId the customer ID of this customer
 	 */
 	@Override
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(long customerId) {
 		model.setCustomerId(customerId);
 	}
 
@@ -285,7 +285,7 @@ public class CustomerWrapper
 	 * @param primaryKey the primary key of this customer
 	 */
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
 	}
 

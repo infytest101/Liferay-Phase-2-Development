@@ -83,19 +83,19 @@ public class AmenitiesSoap implements Serializable {
 	public AmenitiesSoap() {
 	}
 
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _amenitiesId;
 	}
 
-	public void setPrimaryKey(int pk) {
+	public void setPrimaryKey(long pk) {
 		setAmenitiesId(pk);
 	}
 
-	public int getAmenitiesId() {
+	public long getAmenitiesId() {
 		return _amenitiesId;
 	}
 
-	public void setAmenitiesId(int amenitiesId) {
+	public void setAmenitiesId(long amenitiesId) {
 		_amenitiesId = amenitiesId;
 	}
 
@@ -139,7 +139,7 @@ public class AmenitiesSoap implements Serializable {
 		_isGeyserAvailable = isGeyserAvailable;
 	}
 
-	private int _amenitiesId;
+	private long _amenitiesId;
 	private Boolean _isACAvailable;
 	private Boolean _isSmokingAvailable;
 	private Boolean _isWifiAvailable;

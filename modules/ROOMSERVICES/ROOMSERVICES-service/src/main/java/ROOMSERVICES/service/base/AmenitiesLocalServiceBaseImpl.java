@@ -106,7 +106,7 @@ public abstract class AmenitiesLocalServiceBaseImpl
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public Amenities createAmenities(int amenitiesId) {
+	public Amenities createAmenities(long amenitiesId) {
 		return amenitiesPersistence.create(amenitiesId);
 	}
 
@@ -123,7 +123,7 @@ public abstract class AmenitiesLocalServiceBaseImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public Amenities deleteAmenities(int amenitiesId) throws PortalException {
+	public Amenities deleteAmenities(long amenitiesId) throws PortalException {
 		return amenitiesPersistence.remove(amenitiesId);
 	}
 
@@ -231,7 +231,7 @@ public abstract class AmenitiesLocalServiceBaseImpl
 	}
 
 	@Override
-	public Amenities fetchAmenities(int amenitiesId) {
+	public Amenities fetchAmenities(long amenitiesId) {
 		return amenitiesPersistence.fetchByPrimaryKey(amenitiesId);
 	}
 
@@ -243,7 +243,7 @@ public abstract class AmenitiesLocalServiceBaseImpl
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
 	@Override
-	public Amenities getAmenities(int amenitiesId) throws PortalException {
+	public Amenities getAmenities(long amenitiesId) throws PortalException {
 		return amenitiesPersistence.findByPrimaryKey(amenitiesId);
 	}
 
@@ -295,7 +295,7 @@ public abstract class AmenitiesLocalServiceBaseImpl
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
-		return amenitiesPersistence.create(((Integer)primaryKeyObj).intValue());
+		return amenitiesPersistence.create(((Long)primaryKeyObj).longValue());
 	}
 
 	/**

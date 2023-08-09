@@ -61,7 +61,7 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{roomId=");
 		sb.append(roomId);
@@ -71,6 +71,8 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 		sb.append(amenitiesId);
 		sb.append(", roomName=");
 		sb.append(roomName);
+		sb.append(", price=");
+		sb.append(price);
 		sb.append(", totalRoomsAvailable=");
 		sb.append(totalRoomsAvailable);
 		sb.append(", createDate=");
@@ -101,6 +103,7 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 			roomsImpl.setRoomName(roomName);
 		}
 
+		roomsImpl.setPrice(price);
 		roomsImpl.setTotalRoomsAvailable(totalRoomsAvailable);
 
 		if (createDate == Long.MIN_VALUE) {
@@ -138,12 +141,14 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		roomId = objectInput.readInt();
+		roomId = objectInput.readLong();
 
 		roomTypeId = objectInput.readInt();
 
 		amenitiesId = objectInput.readInt();
 		roomName = objectInput.readUTF();
+
+		price = objectInput.readInt();
 
 		totalRoomsAvailable = objectInput.readInt();
 		createDate = objectInput.readLong();
@@ -154,7 +159,7 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeInt(roomId);
+		objectOutput.writeLong(roomId);
 
 		objectOutput.writeInt(roomTypeId);
 
@@ -166,6 +171,8 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 		else {
 			objectOutput.writeUTF(roomName);
 		}
+
+		objectOutput.writeInt(price);
 
 		objectOutput.writeInt(totalRoomsAvailable);
 		objectOutput.writeLong(createDate);
@@ -187,10 +194,11 @@ public class RoomsCacheModel implements CacheModel<Rooms>, Externalizable {
 		}
 	}
 
-	public int roomId;
+	public long roomId;
 	public int roomTypeId;
 	public int amenitiesId;
 	public String roomName;
+	public int price;
 	public int totalRoomsAvailable;
 	public long createDate;
 	public String createBy;

@@ -56,7 +56,7 @@ public class CustomerLocalServiceWrapper
 	 * @return the new customer
 	 */
 	@Override
-	public ROOMSERVICES.model.Customer createCustomer(int customerId) {
+	public ROOMSERVICES.model.Customer createCustomer(long customerId) {
 		return _customerLocalService.createCustomer(customerId);
 	}
 
@@ -100,7 +100,7 @@ public class CustomerLocalServiceWrapper
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Customer deleteCustomer(int customerId)
+	public ROOMSERVICES.model.Customer deleteCustomer(long customerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _customerLocalService.deleteCustomer(customerId);
@@ -208,7 +208,7 @@ public class CustomerLocalServiceWrapper
 	}
 
 	@Override
-	public ROOMSERVICES.model.Customer fetchCustomer(int customerId) {
+	public ROOMSERVICES.model.Customer fetchCustomer(long customerId) {
 		return _customerLocalService.fetchCustomer(customerId);
 	}
 
@@ -227,7 +227,7 @@ public class CustomerLocalServiceWrapper
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Customer getCustomer(int customerId)
+	public ROOMSERVICES.model.Customer getCustomer(long customerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _customerLocalService.getCustomer(customerId);

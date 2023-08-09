@@ -140,7 +140,7 @@ public class CustomerCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		customerId = objectInput.readInt();
+		customerId = objectInput.readLong();
 		firstName = objectInput.readUTF();
 		middleName = objectInput.readUTF();
 		lastName = objectInput.readUTF();
@@ -153,7 +153,7 @@ public class CustomerCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeInt(customerId);
+		objectOutput.writeLong(customerId);
 
 		if (firstName == null) {
 			objectOutput.writeUTF("");
@@ -200,7 +200,7 @@ public class CustomerCacheModel
 		}
 	}
 
-	public int customerId;
+	public long customerId;
 	public String firstName;
 	public String middleName;
 	public String lastName;

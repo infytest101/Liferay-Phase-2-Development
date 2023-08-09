@@ -14,8 +14,6 @@
 
 package ROOMSERVICES.model;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
@@ -46,28 +44,28 @@ public interface RoomTypeModel extends BaseModel<RoomType> {
 	 *
 	 * @return the primary key of this room type
 	 */
-	public RoomTypePK getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this room type.
 	 *
 	 * @param primaryKey the primary key of this room type
 	 */
-	public void setPrimaryKey(RoomTypePK primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the room type ID of this room type.
 	 *
 	 * @return the room type ID of this room type
 	 */
-	public int getRoomTypeId();
+	public long getRoomTypeId();
 
 	/**
 	 * Sets the room type ID of this room type.
 	 *
 	 * @param roomTypeId the room type ID of this room type
 	 */
-	public void setRoomTypeId(int roomTypeId);
+	public void setRoomTypeId(long roomTypeId);
 
 	/**
 	 * Returns the room type of this room type.

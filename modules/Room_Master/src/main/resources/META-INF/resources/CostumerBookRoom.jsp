@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,9 +49,7 @@ bottom:-20px;
 left:25%;
 transform: translateX(-50%);
  }
-#fromDate,#toDate,#fdt,#tdt{
-display:none;
-}
+
  .form-container label {
  width: 200px;
  text-align:left;
@@ -58,61 +59,36 @@ display:none;
 </style> 
 </head>
 <body>
+<portlet:renderURL var="backRoomURL">
+<portlet:param name="page" value="back"/>
+</portlet:renderURL>
+<portlet:renderURL var="editRoomURL">
+<portlet:param name="page" value="costumerBookRoom"/>
+
+</portlet:renderURL>
 <!-- action="/infy/o/addCostumer" -->
 <form id="myForm"  method="POST">
 <h1> Book Hotel Management Form</h1>
-
-<div class="form-container">
-<label>RoomType:</label>
-<select id="mycombo" class="custom-select" name="roomtype"></select><br>
-</div>
+<h3> Room Details::</h3>
 <div class="form-container">
 <label>RoomName:</label>
-<input type="text" id="roomName" name= "roomName" ><br>
-</div>
-<div class="form-container">
-<label for="quantity">Price :</label>
-<input type="number" id="price" name= "price" min="1000" max="25000"><br>
-</div>
-
-<div class="form-container">
-<label>  Please Choose Amenties1:</label>
-  <input type="radio"id="isACRoom" name="isACRoom" value="true"/> AC    
-  <input type="radio"  name="isACRoom" value="false"/> NON-AC <br>
-  </div>
-  
- <div class="form-container">
-<label>Please Choose Amenties2:</label>
-<input type="radio"  name="SmokingAvailable" value="true"/> Smoking 
-<input type="radio"  name="SmokingAvailable" value="false"/> Non-Smoking Room<br>
+<select id="mycombo" class="custom-select" name="RoomName"></select><br>
 </div>
 <div class="form-container">
 <label>Total Room Availability:</label>
 <input type="text" id="totalRoomAvaliable" name="totalRoomAvaliable" >
 </div>
-<div class="form-container">
-<label>Total Room Booked:</label>
-<input type="text" id="totalRoomBooked" name="totalRoomBooked" >
-</div>
-
-
- <div class="form-container">
-<label>Select Facility: </label>   
-              <input type="checkbox" id="WIFI" name="checkdata" value="WIFI"/>WI-FI    
-              <input type="checkbox" id="TV" name="checkdata" value="TV"/>TV    
-              <input type="checkbox" id="Geyser" name="checkdata" value="Geyser"/>Geyser <br> 
- </div> 
-<!--      <div class="form-container">
+<h3>Booking details:</h3>
+  <div class="form-container">
 <label id="fdt">Please Select Booking From:</label>
 <input type="date" id="fromDate" name="fromDate"><br>
 </div>
-
  <div class="form-container">
 <label id="tdt">Please Select Booking To:</label>
 <input type="date" id="toDate" name="toDate"><br>
-</div>  -->     
+</div>
   <div class="form-container">               
-<button id="adddata" class="btn btn-dark" type="submit">ADD ROOM</button>
+<button id="adddata" class="btn btn-dark" type="submit">BOOK ROOM</button>
 </div>
 </form>
 
@@ -129,7 +105,7 @@ $(document).ready(function(){ // collect Room Type Data From Dynamic DB(RoomsCon
 	var dataList=[];
 	$.ajax({
 		type :'GET',
-		url:'/o/infy/getRoomType',
+		url:'/o/infy/getRoomName',
 		success: function(result) {
           console.log("value addded:::::"+result);
           dataList=result;
@@ -139,6 +115,7 @@ $(document).ready(function(){ // collect Room Type Data From Dynamic DB(RoomsCon
 			console.error(error);
            }
 	});
+
 	var comboBox;
 	function populateComboBox(data) {// this method used for showing Roomtype in dynamicDrop Down
 		 comboBox=$("#mycombo");
@@ -150,15 +127,13 @@ $(document).ready(function(){ // collect Room Type Data From Dynamic DB(RoomsCon
 	}
 	var dataList1=[];
 	$('#mycombo').change(function(){
-		var roomtype1=$(this).val();
+		var roomName1=$(this).val();
 		$.ajax({
 			type :'GET',
-			url:'/infy/getRoomTypeAllData?roomtype='+roomtype1,
+			url:'/o/infy/getRoomAvalibilityByName?roomName='+roomName1,
 			success: function(result) {
-	          console.log("value addded::getRoomTypeAllData:::"+result.totalRoomBooked);       
-	   	       console.log("dataList1 roomtype::"+result.totalRoomAvaliable);
-	   	       $('#totalRoomAvaliable').val(result.totalRoomAvaliable);
-	   	    	$('#totalRoomBooked').val(result.totalRoomBooked);
+	          console.log("value addded::getRoomTypeAllData:::"+result);       
+	   	       $('#totalRoomAvaliable').val(result);
 			},
 	         error:function(xhr,status,error){
 				console.error(error);
@@ -284,7 +259,7 @@ $(document).ready(function(){ // collect Room Type Data From Dynamic DB(RoomsCon
 				console.log(" Amenities jSONData::::::::::"+AmenitiesjsonData);
 	});
 	
-/* 	$('#fromDate').on('change', function() {
+	$('#fromDate').on('change', function() {
 		var fromDate = $('#fromDate').val().trim();
 		$('#toDate').attr('min',fromDate);
 		$('#Hotel').DataTable().draw();
@@ -294,11 +269,13 @@ $(document).ready(function(){ // collect Room Type Data From Dynamic DB(RoomsCon
 		var toDate = $('#toDate').val().trim();
 		$('#fromDate').attr('max',toDate);
 		$('#Hotel').DataTable().draw();
-		}); */
+		}); 
 });
 $('#back').click(function(e){
-	window.location.href = "http://localhost:8084/infy/homepage";
-});
+	var backRoomURL = '<%= backRoomURL %>';
+	window.location.href  = backRoomURL;
+		//window.location.href = "http://localhost:8084/infy/homepage";
+	});
 function showMassage(message,duration,colordata) {  
 	var massageElement=document.createElement("div");
 	massageElement.textContent=message;
@@ -320,7 +297,8 @@ function showMassage(message,duration,colordata) {
 	setTimeout(function(){
 		massageElement.remove();
 		},duration);
-	 } 
+	 }
+
 </script>
 
 </html>

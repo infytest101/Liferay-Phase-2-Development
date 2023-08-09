@@ -17,11 +17,15 @@ package ROOMSERVICES.model.impl;
 import ROOMSERVICES.model.Amenities;
 import ROOMSERVICES.model.AmenitiesModel;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -64,7 +68,7 @@ public class AmenitiesModelImpl
 	public static final String TABLE_NAME = "Infy_Amenities";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"amenitiesId", Types.INTEGER}, {"isACAvailable", Types.BOOLEAN},
+		{"amenitiesId", Types.BIGINT}, {"isACAvailable", Types.BOOLEAN},
 		{"isSmokingAvailable", Types.BOOLEAN},
 		{"isWifiAvailable", Types.BOOLEAN}, {"isTVAvailable", Types.BOOLEAN},
 		{"isGeyserAvailable", Types.BOOLEAN}
@@ -74,7 +78,7 @@ public class AmenitiesModelImpl
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("amenitiesId", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("amenitiesId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("isACAvailable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("isSmokingAvailable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("isWifiAvailable", Types.BOOLEAN);
@@ -83,7 +87,7 @@ public class AmenitiesModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Infy_Amenities (amenitiesId INTEGER not null primary key,isACAvailable BOOLEAN,isSmokingAvailable BOOLEAN,isWifiAvailable BOOLEAN,isTVAvailable BOOLEAN,isGeyserAvailable BOOLEAN)";
+		"create table Infy_Amenities (amenitiesId LONG not null primary key,isACAvailable BOOLEAN,isSmokingAvailable BOOLEAN,isWifiAvailable BOOLEAN,isTVAvailable BOOLEAN,isGeyserAvailable BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table Infy_Amenities";
 
@@ -100,11 +104,41 @@ public class AmenitiesModelImpl
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ISACAVAILABLE_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ISGEYSERAVAILABLE_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ISSMOKINGAVAILABLE_COLUMN_BITMASK = 4L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ISTVAVAILABLE_COLUMN_BITMASK = 8L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ISWIFIAVAILABLE_COLUMN_BITMASK = 16L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long AMENITIESID_COLUMN_BITMASK = 1L;
+	public static final long AMENITIESID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -124,12 +158,12 @@ public class AmenitiesModelImpl
 	}
 
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _amenitiesId;
 	}
 
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		setAmenitiesId(primaryKey);
 	}
 
@@ -140,7 +174,7 @@ public class AmenitiesModelImpl
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Integer)primaryKeyObj).intValue());
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -246,7 +280,7 @@ public class AmenitiesModelImpl
 		attributeGetterFunctions.put("amenitiesId", Amenities::getAmenitiesId);
 		attributeSetterBiConsumers.put(
 			"amenitiesId",
-			(BiConsumer<Amenities, Integer>)Amenities::setAmenitiesId);
+			(BiConsumer<Amenities, Long>)Amenities::setAmenitiesId);
 		attributeGetterFunctions.put(
 			"isACAvailable", Amenities::getIsACAvailable);
 		attributeSetterBiConsumers.put(
@@ -280,12 +314,12 @@ public class AmenitiesModelImpl
 	}
 
 	@Override
-	public int getAmenitiesId() {
+	public long getAmenitiesId() {
 		return _amenitiesId;
 	}
 
 	@Override
-	public void setAmenitiesId(int amenitiesId) {
+	public void setAmenitiesId(long amenitiesId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -307,6 +341,16 @@ public class AmenitiesModelImpl
 		_isACAvailable = isACAvailable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Boolean getOriginalIsACAvailable() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isACAvailable"));
+	}
+
 	@Override
 	public Boolean getIsSmokingAvailable() {
 		return _isSmokingAvailable;
@@ -319,6 +363,16 @@ public class AmenitiesModelImpl
 		}
 
 		_isSmokingAvailable = isSmokingAvailable;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Boolean getOriginalIsSmokingAvailable() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isSmokingAvailable"));
 	}
 
 	@Override
@@ -335,6 +389,16 @@ public class AmenitiesModelImpl
 		_isWifiAvailable = isWifiAvailable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Boolean getOriginalIsWifiAvailable() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isWifiAvailable"));
+	}
+
 	@Override
 	public Boolean getIsTVAvailable() {
 		return _isTVAvailable;
@@ -349,6 +413,16 @@ public class AmenitiesModelImpl
 		_isTVAvailable = isTVAvailable;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Boolean getOriginalIsTVAvailable() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isTVAvailable"));
+	}
+
 	@Override
 	public Boolean getIsGeyserAvailable() {
 		return _isGeyserAvailable;
@@ -361,6 +435,16 @@ public class AmenitiesModelImpl
 		}
 
 		_isGeyserAvailable = isGeyserAvailable;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public Boolean getOriginalIsGeyserAvailable() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isGeyserAvailable"));
 	}
 
 	public long getColumnBitmask() {
@@ -385,6 +469,19 @@ public class AmenitiesModelImpl
 		}
 
 		return _columnBitmask;
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			0, Amenities.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
 	}
 
 	@Override
@@ -420,7 +517,7 @@ public class AmenitiesModelImpl
 
 	@Override
 	public int compareTo(Amenities amenities) {
-		int primaryKey = amenities.getPrimaryKey();
+		long primaryKey = amenities.getPrimaryKey();
 
 		if (getPrimaryKey() < primaryKey) {
 			return -1;
@@ -445,7 +542,7 @@ public class AmenitiesModelImpl
 
 		Amenities amenities = (Amenities)object;
 
-		int primaryKey = amenities.getPrimaryKey();
+		long primaryKey = amenities.getPrimaryKey();
 
 		if (getPrimaryKey() == primaryKey) {
 			return true;
@@ -457,7 +554,7 @@ public class AmenitiesModelImpl
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey();
+		return (int)getPrimaryKey();
 	}
 
 	/**
@@ -611,7 +708,7 @@ public class AmenitiesModelImpl
 
 	}
 
-	private int _amenitiesId;
+	private long _amenitiesId;
 	private Boolean _isACAvailable;
 	private Boolean _isSmokingAvailable;
 	private Boolean _isWifiAvailable;

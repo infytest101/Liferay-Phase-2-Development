@@ -106,7 +106,7 @@ public abstract class RoomsLocalServiceBaseImpl
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public Rooms createRooms(int roomId) {
+	public Rooms createRooms(long roomId) {
 		return roomsPersistence.create(roomId);
 	}
 
@@ -123,7 +123,7 @@ public abstract class RoomsLocalServiceBaseImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public Rooms deleteRooms(int roomId) throws PortalException {
+	public Rooms deleteRooms(long roomId) throws PortalException {
 		return roomsPersistence.remove(roomId);
 	}
 
@@ -229,7 +229,7 @@ public abstract class RoomsLocalServiceBaseImpl
 	}
 
 	@Override
-	public Rooms fetchRooms(int roomId) {
+	public Rooms fetchRooms(long roomId) {
 		return roomsPersistence.fetchByPrimaryKey(roomId);
 	}
 
@@ -241,7 +241,7 @@ public abstract class RoomsLocalServiceBaseImpl
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
 	@Override
-	public Rooms getRooms(int roomId) throws PortalException {
+	public Rooms getRooms(long roomId) throws PortalException {
 		return roomsPersistence.findByPrimaryKey(roomId);
 	}
 
@@ -291,7 +291,7 @@ public abstract class RoomsLocalServiceBaseImpl
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
-		return roomsPersistence.create(((Integer)primaryKeyObj).intValue());
+		return roomsPersistence.create(((Long)primaryKeyObj).longValue());
 	}
 
 	/**

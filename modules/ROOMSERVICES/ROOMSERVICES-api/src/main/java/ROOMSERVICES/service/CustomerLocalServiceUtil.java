@@ -65,7 +65,7 @@ public class CustomerLocalServiceUtil {
 	 * @param customerId the primary key for the new customer
 	 * @return the new customer
 	 */
-	public static Customer createCustomer(int customerId) {
+	public static Customer createCustomer(long customerId) {
 		return getService().createCustomer(customerId);
 	}
 
@@ -104,7 +104,7 @@ public class CustomerLocalServiceUtil {
 	 * @return the customer that was removed
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
-	public static Customer deleteCustomer(int customerId)
+	public static Customer deleteCustomer(long customerId)
 		throws PortalException {
 
 		return getService().deleteCustomer(customerId);
@@ -197,7 +197,7 @@ public class CustomerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static Customer fetchCustomer(int customerId) {
+	public static Customer fetchCustomer(long customerId) {
 		return getService().fetchCustomer(customerId);
 	}
 
@@ -214,7 +214,7 @@ public class CustomerLocalServiceUtil {
 	 * @return the customer
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
-	public static Customer getCustomer(int customerId) throws PortalException {
+	public static Customer getCustomer(long customerId) throws PortalException {
 		return getService().getCustomer(customerId);
 	}
 

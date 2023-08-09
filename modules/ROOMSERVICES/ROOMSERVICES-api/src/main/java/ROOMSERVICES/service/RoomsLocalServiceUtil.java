@@ -44,11 +44,6 @@ public class RoomsLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>ROOMSERVICES.service.impl.RoomsLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static String addRoomDetails(
-		String amenitiesjsonData, String formData) {
-
-		return getService().addRoomDetails(amenitiesjsonData, formData);
-	}
 
 	/**
 	 * Adds the rooms to the database. Also notifies the appropriate model listeners.
@@ -80,7 +75,7 @@ public class RoomsLocalServiceUtil {
 	 * @param roomId the primary key for the new rooms
 	 * @return the new rooms
 	 */
-	public static Rooms createRooms(int roomId) {
+	public static Rooms createRooms(long roomId) {
 		return getService().createRooms(roomId);
 	}
 
@@ -105,7 +100,7 @@ public class RoomsLocalServiceUtil {
 	 * @return the rooms that was removed
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
-	public static Rooms deleteRooms(int roomId) throws PortalException {
+	public static Rooms deleteRooms(long roomId) throws PortalException {
 		return getService().deleteRooms(roomId);
 	}
 
@@ -200,8 +195,14 @@ public class RoomsLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static Rooms fetchRooms(int roomId) {
+	public static Rooms fetchRooms(long roomId) {
 		return getService().fetchRooms(roomId);
+	}
+
+	public static Rooms findByRoomName(String roomName)
+		throws ROOMSERVICES.exception.NoSuchRoomsException {
+
+		return getService().findByRoomName(roomName);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -242,7 +243,7 @@ public class RoomsLocalServiceUtil {
 	 * @return the rooms
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
-	public static Rooms getRooms(int roomId) throws PortalException {
+	public static Rooms getRooms(long roomId) throws PortalException {
 		return getService().getRooms(roomId);
 	}
 

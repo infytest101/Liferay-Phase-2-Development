@@ -36,36 +36,17 @@ public interface RoomType extends PersistedModel, RoomTypeModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>ROOMSERVICES.model.impl.RoomTypeImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<RoomType, Integer> ROOM_TYPE_ID_ACCESSOR =
-		new Accessor<RoomType, Integer>() {
+	public static final Accessor<RoomType, Long> ROOM_TYPE_ID_ACCESSOR =
+		new Accessor<RoomType, Long>() {
 
 			@Override
-			public Integer get(RoomType roomType) {
+			public Long get(RoomType roomType) {
 				return roomType.getRoomTypeId();
 			}
 
 			@Override
-			public Class<Integer> getAttributeClass() {
-				return Integer.class;
-			}
-
-			@Override
-			public Class<RoomType> getTypeClass() {
-				return RoomType.class;
-			}
-
-		};
-	public static final Accessor<RoomType, String> ROOM_TYPE_ACCESSOR =
-		new Accessor<RoomType, String>() {
-
-			@Override
-			public String get(RoomType roomType) {
-				return roomType.getRoomType();
-			}
-
-			@Override
-			public Class<String> getAttributeClass() {
-				return String.class;
+			public Class<Long> getAttributeClass() {
+				return Long.class;
 			}
 
 			@Override

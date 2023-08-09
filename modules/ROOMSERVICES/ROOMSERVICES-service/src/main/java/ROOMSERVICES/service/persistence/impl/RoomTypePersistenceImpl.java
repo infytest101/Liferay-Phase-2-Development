@@ -20,7 +20,6 @@ import ROOMSERVICES.model.RoomType;
 import ROOMSERVICES.model.impl.RoomTypeImpl;
 import ROOMSERVICES.model.impl.RoomTypeModelImpl;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
 import ROOMSERVICES.service.persistence.RoomTypePersistence;
 import ROOMSERVICES.service.persistence.RoomTypeUtil;
 import ROOMSERVICES.service.persistence.impl.constants.InfyPersistenceConstants;
@@ -46,7 +45,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.Serializable;
 
@@ -100,9 +98,9 @@ public class RoomTypePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByRoomType_RoomType;
-	private FinderPath _finderPathWithoutPaginationFindByRoomType_RoomType;
-	private FinderPath _finderPathCountByRoomType_RoomType;
+	private FinderPath _finderPathWithPaginationFindByRoomType;
+	private FinderPath _finderPathWithoutPaginationFindByRoomType;
+	private FinderPath _finderPathCountByRoomType;
 
 	/**
 	 * Returns all the room types where RoomType = &#63;.
@@ -111,8 +109,8 @@ public class RoomTypePersistenceImpl
 	 * @return the matching room types
 	 */
 	@Override
-	public List<RoomType> findByRoomType_RoomType(String RoomType) {
-		return findByRoomType_RoomType(
+	public List<RoomType> findByRoomType(String RoomType) {
+		return findByRoomType(
 			RoomType, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -129,10 +127,8 @@ public class RoomTypePersistenceImpl
 	 * @return the range of matching room types
 	 */
 	@Override
-	public List<RoomType> findByRoomType_RoomType(
-		String RoomType, int start, int end) {
-
-		return findByRoomType_RoomType(RoomType, start, end, null);
+	public List<RoomType> findByRoomType(String RoomType, int start, int end) {
+		return findByRoomType(RoomType, start, end, null);
 	}
 
 	/**
@@ -149,12 +145,11 @@ public class RoomTypePersistenceImpl
 	 * @return the ordered range of matching room types
 	 */
 	@Override
-	public List<RoomType> findByRoomType_RoomType(
+	public List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		OrderByComparator<RoomType> orderByComparator) {
 
-		return findByRoomType_RoomType(
-			RoomType, start, end, orderByComparator, true);
+		return findByRoomType(RoomType, start, end, orderByComparator, true);
 	}
 
 	/**
@@ -172,7 +167,7 @@ public class RoomTypePersistenceImpl
 	 * @return the ordered range of matching room types
 	 */
 	@Override
-	public List<RoomType> findByRoomType_RoomType(
+	public List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		OrderByComparator<RoomType> orderByComparator, boolean useFinderCache) {
 
@@ -185,13 +180,12 @@ public class RoomTypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath =
-					_finderPathWithoutPaginationFindByRoomType_RoomType;
+				finderPath = _finderPathWithoutPaginationFindByRoomType;
 				finderArgs = new Object[] {RoomType};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByRoomType_RoomType;
+			finderPath = _finderPathWithPaginationFindByRoomType;
 			finderArgs = new Object[] {RoomType, start, end, orderByComparator};
 		}
 
@@ -228,12 +222,12 @@ public class RoomTypePersistenceImpl
 			boolean bindRoomType = false;
 
 			if (RoomType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_3);
+				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_3);
 			}
 			else {
 				bindRoomType = true;
 
-				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_2);
+				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -288,12 +282,11 @@ public class RoomTypePersistenceImpl
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
 	@Override
-	public RoomType findByRoomType_RoomType_First(
+	public RoomType findByRoomType_First(
 			String RoomType, OrderByComparator<RoomType> orderByComparator)
 		throws NoSuchRoomTypeException {
 
-		RoomType roomType = fetchByRoomType_RoomType_First(
-			RoomType, orderByComparator);
+		RoomType roomType = fetchByRoomType_First(RoomType, orderByComparator);
 
 		if (roomType != null) {
 			return roomType;
@@ -319,11 +312,10 @@ public class RoomTypePersistenceImpl
 	 * @return the first matching room type, or <code>null</code> if a matching room type could not be found
 	 */
 	@Override
-	public RoomType fetchByRoomType_RoomType_First(
+	public RoomType fetchByRoomType_First(
 		String RoomType, OrderByComparator<RoomType> orderByComparator) {
 
-		List<RoomType> list = findByRoomType_RoomType(
-			RoomType, 0, 1, orderByComparator);
+		List<RoomType> list = findByRoomType(RoomType, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -341,12 +333,11 @@ public class RoomTypePersistenceImpl
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
 	@Override
-	public RoomType findByRoomType_RoomType_Last(
+	public RoomType findByRoomType_Last(
 			String RoomType, OrderByComparator<RoomType> orderByComparator)
 		throws NoSuchRoomTypeException {
 
-		RoomType roomType = fetchByRoomType_RoomType_Last(
-			RoomType, orderByComparator);
+		RoomType roomType = fetchByRoomType_Last(RoomType, orderByComparator);
 
 		if (roomType != null) {
 			return roomType;
@@ -372,16 +363,16 @@ public class RoomTypePersistenceImpl
 	 * @return the last matching room type, or <code>null</code> if a matching room type could not be found
 	 */
 	@Override
-	public RoomType fetchByRoomType_RoomType_Last(
+	public RoomType fetchByRoomType_Last(
 		String RoomType, OrderByComparator<RoomType> orderByComparator) {
 
-		int count = countByRoomType_RoomType(RoomType);
+		int count = countByRoomType(RoomType);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<RoomType> list = findByRoomType_RoomType(
+		List<RoomType> list = findByRoomType(
 			RoomType, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -394,21 +385,21 @@ public class RoomTypePersistenceImpl
 	/**
 	 * Returns the room types before and after the current room type in the ordered set where RoomType = &#63;.
 	 *
-	 * @param roomTypePK the primary key of the current room type
+	 * @param roomTypeId the primary key of the current room type
 	 * @param RoomType the room type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
 	@Override
-	public RoomType[] findByRoomType_RoomType_PrevAndNext(
-			RoomTypePK roomTypePK, String RoomType,
+	public RoomType[] findByRoomType_PrevAndNext(
+			long roomTypeId, String RoomType,
 			OrderByComparator<RoomType> orderByComparator)
 		throws NoSuchRoomTypeException {
 
 		RoomType = Objects.toString(RoomType, "");
 
-		RoomType roomType = findByPrimaryKey(roomTypePK);
+		RoomType roomType = findByPrimaryKey(roomTypeId);
 
 		Session session = null;
 
@@ -417,12 +408,12 @@ public class RoomTypePersistenceImpl
 
 			RoomType[] array = new RoomTypeImpl[3];
 
-			array[0] = getByRoomType_RoomType_PrevAndNext(
+			array[0] = getByRoomType_PrevAndNext(
 				session, roomType, RoomType, orderByComparator, true);
 
 			array[1] = roomType;
 
-			array[2] = getByRoomType_RoomType_PrevAndNext(
+			array[2] = getByRoomType_PrevAndNext(
 				session, roomType, RoomType, orderByComparator, false);
 
 			return array;
@@ -435,7 +426,7 @@ public class RoomTypePersistenceImpl
 		}
 	}
 
-	protected RoomType getByRoomType_RoomType_PrevAndNext(
+	protected RoomType getByRoomType_PrevAndNext(
 		Session session, RoomType roomType, String RoomType,
 		OrderByComparator<RoomType> orderByComparator, boolean previous) {
 
@@ -455,12 +446,12 @@ public class RoomTypePersistenceImpl
 		boolean bindRoomType = false;
 
 		if (RoomType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_3);
+			sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_3);
 		}
 		else {
 			bindRoomType = true;
 
-			sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_2);
+			sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -560,9 +551,9 @@ public class RoomTypePersistenceImpl
 	 * @param RoomType the room type
 	 */
 	@Override
-	public void removeByRoomType_RoomType(String RoomType) {
+	public void removeByRoomType(String RoomType) {
 		for (RoomType roomType :
-				findByRoomType_RoomType(
+				findByRoomType(
 					RoomType, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(roomType);
@@ -576,10 +567,10 @@ public class RoomTypePersistenceImpl
 	 * @return the number of matching room types
 	 */
 	@Override
-	public int countByRoomType_RoomType(String RoomType) {
+	public int countByRoomType(String RoomType) {
 		RoomType = Objects.toString(RoomType, "");
 
-		FinderPath finderPath = _finderPathCountByRoomType_RoomType;
+		FinderPath finderPath = _finderPathCountByRoomType;
 
 		Object[] finderArgs = new Object[] {RoomType};
 
@@ -593,12 +584,12 @@ public class RoomTypePersistenceImpl
 			boolean bindRoomType = false;
 
 			if (RoomType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_3);
+				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_3);
 			}
 			else {
 				bindRoomType = true;
 
-				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_2);
+				sb.append(_FINDER_COLUMN_ROOMTYPE_ROOMTYPE_2);
 			}
 
 			String sql = sb.toString();
@@ -631,17 +622,17 @@ public class RoomTypePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_2 =
-		"roomType.id.RoomType = ?";
+	private static final String _FINDER_COLUMN_ROOMTYPE_ROOMTYPE_2 =
+		"roomType.RoomType = ?";
 
-	private static final String _FINDER_COLUMN_ROOMTYPE_ROOMTYPE_ROOMTYPE_3 =
-		"(roomType.id.RoomType IS NULL OR roomType.id.RoomType = '')";
+	private static final String _FINDER_COLUMN_ROOMTYPE_ROOMTYPE_3 =
+		"(roomType.RoomType IS NULL OR roomType.RoomType = '')";
 
 	public RoomTypePersistenceImpl() {
 		setModelClass(RoomType.class);
 
 		setModelImplClass(RoomTypeImpl.class);
-		setModelPKClass(RoomTypePK.class);
+		setModelPKClass(long.class);
 	}
 
 	/**
@@ -729,15 +720,15 @@ public class RoomTypePersistenceImpl
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
 	@Override
-	public RoomType create(RoomTypePK roomTypePK) {
+	public RoomType create(long roomTypeId) {
 		RoomType roomType = new RoomTypeImpl();
 
 		roomType.setNew(true);
-		roomType.setPrimaryKey(roomTypePK);
+		roomType.setPrimaryKey(roomTypeId);
 
 		return roomType;
 	}
@@ -745,15 +736,13 @@ public class RoomTypePersistenceImpl
 	/**
 	 * Removes the room type with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type that was removed
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
 	@Override
-	public RoomType remove(RoomTypePK roomTypePK)
-		throws NoSuchRoomTypeException {
-
-		return remove((Serializable)roomTypePK);
+	public RoomType remove(long roomTypeId) throws NoSuchRoomTypeException {
+		return remove((Serializable)roomTypeId);
 	}
 
 	/**
@@ -908,26 +897,26 @@ public class RoomTypePersistenceImpl
 	/**
 	 * Returns the room type with the primary key or throws a <code>NoSuchRoomTypeException</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
 	@Override
-	public RoomType findByPrimaryKey(RoomTypePK roomTypePK)
+	public RoomType findByPrimaryKey(long roomTypeId)
 		throws NoSuchRoomTypeException {
 
-		return findByPrimaryKey((Serializable)roomTypePK);
+		return findByPrimaryKey((Serializable)roomTypeId);
 	}
 
 	/**
 	 * Returns the room type with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type, or <code>null</code> if a room type with the primary key could not be found
 	 */
 	@Override
-	public RoomType fetchByPrimaryKey(RoomTypePK roomTypePK) {
-		return fetchByPrimaryKey((Serializable)roomTypePK);
+	public RoomType fetchByPrimaryKey(long roomTypeId) {
+		return fetchByPrimaryKey((Serializable)roomTypeId);
 	}
 
 	/**
@@ -1110,18 +1099,13 @@ public class RoomTypePersistenceImpl
 	}
 
 	@Override
-	public Set<String> getCompoundPKColumnNames() {
-		return _compoundPKColumnNames;
-	}
-
-	@Override
 	protected EntityCache getEntityCache() {
 		return entityCache;
 	}
 
 	@Override
 	protected String getPKDBName() {
-		return "roomTypePK";
+		return "roomTypeId";
 	}
 
 	@Override
@@ -1161,23 +1145,23 @@ public class RoomTypePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
-		_finderPathWithPaginationFindByRoomType_RoomType = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRoomType_RoomType",
+		_finderPathWithPaginationFindByRoomType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRoomType",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"RoomType"}, true);
 
-		_finderPathWithoutPaginationFindByRoomType_RoomType = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByRoomType_RoomType", new String[] {String.class.getName()},
-			new String[] {"RoomType"}, true);
+		_finderPathWithoutPaginationFindByRoomType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRoomType",
+			new String[] {String.class.getName()}, new String[] {"RoomType"},
+			true);
 
-		_finderPathCountByRoomType_RoomType = _createFinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByRoomType_RoomType", new String[] {String.class.getName()},
-			new String[] {"RoomType"}, false);
+		_finderPathCountByRoomType = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRoomType",
+			new String[] {String.class.getName()}, new String[] {"RoomType"},
+			false);
 
 		_setRoomTypeUtilPersistence(this);
 	}
@@ -1268,9 +1252,6 @@ public class RoomTypePersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RoomTypePersistenceImpl.class);
-
-	private static final Set<String> _compoundPKColumnNames = SetUtil.fromArray(
-		new String[] {"roomTypeId", "RoomType"});
 
 	private FinderPath _createFinderPath(
 		String cacheName, String methodName, String[] params,

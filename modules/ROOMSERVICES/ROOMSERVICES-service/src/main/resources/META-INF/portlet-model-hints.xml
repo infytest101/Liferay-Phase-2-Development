@@ -2,7 +2,7 @@
 
 <model-hints>
 	<model name="ROOMSERVICES.model.Amenities">
-		<field name="amenitiesId" type="int" />
+		<field name="amenitiesId" type="long" />
 		<field name="isACAvailable" type="Boolean" />
 		<field name="isSmokingAvailable" type="Boolean" />
 		<field name="isWifiAvailable" type="Boolean" />
@@ -22,7 +22,7 @@
 		<field name="bookingEndDate" type="Date" />
 	</model>
 	<model name="ROOMSERVICES.model.Customer">
-		<field name="customerId" type="int" />
+		<field name="customerId" type="long" />
 		<field name="firstName" type="String" />
 		<field name="middleName" type="String" />
 		<field name="lastName" type="String" />
@@ -32,10 +32,11 @@
 		<field name="description" type="String" />
 	</model>
 	<model name="ROOMSERVICES.model.Rooms">
-		<field name="roomId" type="int" />
+		<field name="roomId" type="long" />
 		<field name="roomTypeId" type="int" />
 		<field name="amenitiesId" type="int" />
 		<field name="roomName" type="String" />
+		<field name="price" type="int" />
 		<field name="totalRoomsAvailable" type="int" />
 		<field name="createDate" type="Date" />
 		<field name="createBy" type="String" />
@@ -43,7 +44,7 @@
 		<field name="updatedBy" type="String" />
 	</model>
 	<model name="ROOMSERVICES.model.RoomType">
-		<field name="roomTypeId" type="int" />
+		<field name="roomTypeId" type="long" />
 		<field name="RoomType" type="String" />
 	</model>
 </model-hints>

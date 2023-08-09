@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.ArrayList" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +35,12 @@ href="https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css" />
  </style>
  </head>
 <body>
+<portlet:renderURL var="backRoomURL">
+<portlet:param name="page" value="back"/>
+</portlet:renderURL>
+<portlet:renderURL var="costumerBookRoomURL">
+<portlet:param name="page" value="costumerBookRoomURL"/>
+</portlet:renderURL>
 <h1>HOTEL MANAGMENT SYSTEM</h1>
 <!-- Filter>>> //21/06/2023
 from Date::<input type="date" id="fromDateFilter" name="fromDate">
@@ -47,14 +56,15 @@ to Date::<input type="date" id="toDateFilter" name="toDate"> -->
 	<tr>
 		<th id="roomid">Room ID</th>
 		<th id="roomtypedata">Room Type</th>
+		<th id="roomName">Room Name</th>
 		<th id="price">Price</th>
 		<th id="formDate">FROM DATE</th>
 		<th id="toDate">TO DATE</th>
 		<th id="totalRoomAvaliable">Room availability</th>
 		<th id="totalRoomBooked">Room Booked</th>
-		<th id="acnonac">AC / NON-AC</th>
-		<th id="smoknosmok">Smoking / Non-Smoking</th>
-		<th id="amentis">WIFI/ TV / Geyser</th>
+		<th id="acnonac">AC</th>
+		<th id="smoknosmok">Smoking</th>
+		<th id="amentis">Amenities</th>
 		<th id="editdel">Action</th>
 		
 	</tr>
@@ -89,8 +99,10 @@ function showMassage(message,duration,colordata) {
 		},duration);
 	 } 
 $('#back').click(function(e){
-	window.location.href = "http://localhost:8084/infy/homepage";
-});
+	var backRoomURL = '<%= backRoomURL %>';
+	window.location.href  = backRoomURL;
+		//window.location.href = "http://localhost:8084/infy/homepage";
+	});
 function editdata(value){
 	
 	var editformData='';
@@ -180,10 +192,10 @@ function editdata(value){
 		  });
 		}
 		else if(value=="edit"){
-			 showMassage("It Will be Implementing In Phase 2 Devlopment",5000,"red");
-			 return false;
-			 var rmval= confirm("Are YOU SURE ,EDIT THE ROOM DATA  ");
-			  if(rmval==true) {
+			 //showMassage("It Will be Implementing In Phase 2 Devlopment",5000,"red");
+			// return false;
+			// var rmval= confirm("Are YOU SURE ,BOOK THE ROOM DATA");
+			 // if(rmval==true) {
 					 $('#Hotel').on('change','.deleteclasss',function(){
 						 var rowdata=$(this).closest('tr').find('td').map(function(){
 							  var fieldname=$(this).data('field-name');
@@ -198,7 +210,9 @@ function editdata(value){
 						  var Encodingvalue=encodeURIComponent(rowdata.join('&'));
 						  rowdata1=rowdata;
 						  console.log("Encodingvalue"+editEncodingvalue);
-			  $.ajax({
+						  var costumerBookRoomURL = '<%= costumerBookRoomURL %>';
+							  window.location.href  = costumerBookRoomURL;
+			/*   $.ajax({
 				 	url:'/infy/editroomdetails1?',
 					type :'get',
 					data:editEncodingvalue,
@@ -213,9 +227,9 @@ function editdata(value){
 			         error:function(xhr,status,error){
 						console.error(error);
 			           }
-				}); 
+				}); */ 
 					 });
-			  }
+			 // }
 		}
 }
 function addRoom(){
@@ -239,10 +253,10 @@ $(document).ready(function () {
 		//	"visible":false
 		},
 		   {
-				"targets":3,"width":"15%","visible":false
+				"targets":4,"width":"15%","visible":false
 		   },
 		   {
-				"targets":4,"width":"10%","visible":false
+				"targets":5,"width":"10%","visible":false
 		   },
 		   {
 				"targets":1,"width":"5%"
@@ -321,13 +335,37 @@ $(document).ready(function () {
 	          
 	       for (var i=0;i<dataList.length; i++) { 
 	       var roomType = dataList[i]; 
-	       var am=JSON.parse(roomType.amenties);
-	       var wifi=am.amenties;
-	       console.log("wifiiii"+wifi);
-	       
+	       //var am=JSON.parse(roomType.amenties);
+	       //var wifi=am.amenties;
+	       //console.log("wifiiii"+wifi);
+	       var wifidata='';
+	 	  var ACAvailable='not avaliable';
+	 	  var SmokingAvailable='not avaliable';
+	  if(roomType.wifiAvailable){
+	 	 wifidata+="WIFI,";
+	  }
+	  if(roomType.tvavailable){
+	 	 wifidata+="TV,";
+	  }
+	  if(roomType.geyserAvailable){
+	 	 wifidata+="Geyser,";
+	  }
+	  if(roomType.isACAvailable){
+	 	 ACAvailable="avaliable";
+	  }
+	  if(roomType.isSmokingAvailable){
+	 	 SmokingAvailable="avaliable";
+	  }
+	 var checkwifi = wifidata.includes(",", wifidata.length-1);
+	 var dataresult='';
+	 if(checkwifi){
+	  dataresult = wifidata.substring(0, wifidata.length-1);
+	 }
+	 var wifi="";
 	      var newrow= tabledata.row.add([
 	    	   roomType.id,
 	    	   roomType.roomtypedata,
+	    	   roomType.roomName,
 	    	   roomType.price,
 	    	   roomType.fromDate,
 	    	   roomType.toDate,
@@ -335,11 +373,12 @@ $(document).ready(function () {
 	    	   roomType.totalRoomBooked,
 	    	   roomType.isACAvailable,
 	    	   roomType.isSmokingAvailable,
-	    	   wifi,
+	    	   dataresult,
 	    	   '<td><select class="deleteclasss" onchange="editdata(this.value)"><option value="">Select..</option><option value="edit" Style=background:lightblue>Book Room</option><option value="delete" Style=background:red>Delete Room</option></select></td>'
 	    	   ]).draw(false).node();
 	      $(newrow).find('td:eq(0)').attr('data-field-name','roomid').addClass('rm');
 	      $(newrow).find('td:eq(1)').attr('data-field-name','roomtypedata');
+	      $(newrow).find('td:eq(1)').attr('data-field-name','roomName');
 	      $(newrow).find('td:eq(2)').attr('data-field-name','price');
 	      $(newrow).find('td:eq(3)').attr('data-field-name','formDate').addClass('fmdate');
 	      $(newrow).find('td:eq(4)').attr('data-field-name','toDate').addClass('tmdate');
@@ -377,41 +416,64 @@ $(document).ready(function () {
 	
 	 $.ajax({
 		type :'GET',
-		url:'/infy/fetchAllRoooms',
+		url:'/o/infy/fetchAllRoooms',
 		success: function(result) {
           console.log("value addded:::::"+result);
           dataList=result;
           console.log("value addded:::::"+dataList)
        for (var i=0;i<dataList.length; i++) { 
        var roomType = dataList[i]; 
-       var am=JSON.parse(roomType.amenties);
-       var wifi=am.amenties;
-       console.log("wifiiii"+wifi);
+       var wifidata='';
+	 	  var ACAvailable='not avaliable';
+	 	  var SmokingAvailable='not avaliable';
+	  if(roomType.wifiAvailable){
+	 	 wifidata+="WIFI,";
+	  }
+	  if(roomType.tvavailable){
+	 	 wifidata+="TV,";
+	  }
+	  if(roomType.geyserAvailable){
+	 	 wifidata+="Geyser,";
+	  }
+	  if(roomType.isACAvailable){
+	 	 ACAvailable="avaliable";
+	  }
+	  if(roomType.isSmokingAvailable){
+	 	 SmokingAvailable="avaliable";
+	  }
+	 var checkwifi = wifidata.includes(",", wifidata.length-1);
+	 var dataresult='';
+	 if(checkwifi){
+	  dataresult = wifidata.substring(0, wifidata.length-1);
+	 }
+	 var wifi="";
        
        var newrow= tabledata.row.add([
     	   roomType.id,
     	   roomType.roomtypedata,
+    	   roomType.roomName,
     	   roomType.price,
     	   roomType.fromDate,
     	   roomType.toDate,
     	   roomType.totalRoomAvaliable,
     	   roomType.totalRoomBooked,
-    	   roomType.isACAvailable,
-    	   roomType.isSmokingAvailable,
-    	   wifi,
+    	   ACAvailable,
+    	   SmokingAvailable,
+    	   dataresult,
     	   '<td><select class="deleteclasss"  onchange="editdata(this.value)"><option value="">Select..</option><option class="opt2"value="edit" Style=background:lightblue>Book Room</option><option value="delete" Style=background:red>Delete Room</option></select></td>'
     	   ]).draw(false).node();
       $(newrow).find('td:eq(0)').attr('data-field-name','roomid').addClass('rm');
       $(newrow).find('td:eq(1)').attr('data-field-name','roomtypedata');
-      $(newrow).find('td:eq(2)').attr('data-field-name','price');
-      $(newrow).find('td:eq(3)').attr('data-field-name','formDate').addClass('fmdate');
-      $(newrow).find('td:eq(4)').attr('data-field-name','toDate').addClass('tmdate');
-      $(newrow).find('td:eq(5)').attr('data-field-name','totalRoomAvaliable').addClass('trma');
-      $(newrow).find('td:eq(6)').attr('data-field-name','totalRoomBooked').addClass('trbd');
-      $(newrow).find('td:eq(7)').attr('data-field-name','acnonac');
-      $(newrow).find('td:eq(8)').attr('data-field-name','smoknonsmok');
-      $(newrow).find('td:eq(9)').attr('data-field-name','wifitv');
-      $(newrow).find('td:eq(10)').attr('data-field-name','action').addClass('act');
+      $(newrow).find('td:eq(2)').attr('data-field-name','roomName');
+      $(newrow).find('td:eq(3)').attr('data-field-name','price');
+      $(newrow).find('td:eq(4)').attr('data-field-name','formDate').addClass('fmdate');
+      $(newrow).find('td:eq(5)').attr('data-field-name','toDate').addClass('tmdate');
+      $(newrow).find('td:eq(6)').attr('data-field-name','totalRoomAvaliable').addClass('trma');
+      $(newrow).find('td:eq(7)').attr('data-field-name','totalRoomBooked').addClass('trbd');
+      $(newrow).find('td:eq(8)').attr('data-field-name','acnonac');
+      $(newrow).find('td:eq(9)').attr('data-field-name','smoknonsmok');
+      $(newrow).find('td:eq(10)').attr('data-field-name','wifitv');
+      $(newrow).find('td:eq(11)').attr('data-field-name','action').addClass('act');
      
        }
        },
@@ -426,7 +488,7 @@ $(document).ready(function () {
 	 
 	$.ajax({
 		type :'GET',
-		url:'/infy/getRoomType',
+		url:'/o/infy/getRoomType',
 		success: function(result) {
           console.log("value addded:::::"+result);
           dataList=result;

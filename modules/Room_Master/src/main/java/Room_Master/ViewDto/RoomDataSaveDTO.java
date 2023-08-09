@@ -1,13 +1,26 @@
-package ROOMSERVICES.service.Dto;
+package Room_Master.ViewDto;
 public class RoomDataSaveDTO {
 	private int roomid;
 	private String roomType;
+	private String roomName;
 	private int price;
 	private boolean isACAvailable;
 	private boolean isSmokingAvailable;
 	private int totalRoomAvaliable;
 	private int totalRoomBooked;
 	
+	public String getRoomName() {
+		return roomName;
+	}
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+	public void setACAvailable(boolean isACAvailable) {
+		this.isACAvailable = isACAvailable;
+	}
+	public void setSmokingAvailable(boolean isSmokingAvailable) {
+		this.isSmokingAvailable = isSmokingAvailable;
+	}
 	public int getRoomid() {
 		return roomid;
 	}
@@ -55,8 +68,8 @@ public class RoomDataSaveDTO {
 	}
 	@Override
 	public String toString() {
-		return "RoomDataSaveDTO [roomid=" + roomid + ", roomType=" + roomType + ", price=" + price + ", isACAvailable="
-				+ isACAvailable + ", isSmokingAvailable=" + isSmokingAvailable + ", totalRoomAvaliable="
-				+ totalRoomAvaliable + ", totalRoomBooked=" + totalRoomBooked + "]";
+		return "RoomDataSaveDTO [roomid=" + roomid + ", roomType=" + roomType + ", roomName=" + roomName + ", price="
+				+ price + ", isACAvailable=" + isACAvailable + ", isSmokingAvailable=" + isSmokingAvailable
+				+ ", totalRoomAvaliable=" + totalRoomAvaliable + ", totalRoomBooked=" + totalRoomBooked + "]";
 	}
 }

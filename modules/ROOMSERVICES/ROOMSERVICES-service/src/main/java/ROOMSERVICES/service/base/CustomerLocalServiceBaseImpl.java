@@ -106,7 +106,7 @@ public abstract class CustomerLocalServiceBaseImpl
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public Customer createCustomer(int customerId) {
+	public Customer createCustomer(long customerId) {
 		return customerPersistence.create(customerId);
 	}
 
@@ -123,7 +123,7 @@ public abstract class CustomerLocalServiceBaseImpl
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public Customer deleteCustomer(int customerId) throws PortalException {
+	public Customer deleteCustomer(long customerId) throws PortalException {
 		return customerPersistence.remove(customerId);
 	}
 
@@ -231,7 +231,7 @@ public abstract class CustomerLocalServiceBaseImpl
 	}
 
 	@Override
-	public Customer fetchCustomer(int customerId) {
+	public Customer fetchCustomer(long customerId) {
 		return customerPersistence.fetchByPrimaryKey(customerId);
 	}
 
@@ -243,7 +243,7 @@ public abstract class CustomerLocalServiceBaseImpl
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
 	@Override
-	public Customer getCustomer(int customerId) throws PortalException {
+	public Customer getCustomer(long customerId) throws PortalException {
 		return customerPersistence.findByPrimaryKey(customerId);
 	}
 
@@ -294,7 +294,7 @@ public abstract class CustomerLocalServiceBaseImpl
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
-		return customerPersistence.create(((Integer)primaryKeyObj).intValue());
+		return customerPersistence.create(((Long)primaryKeyObj).longValue());
 	}
 
 	/**

@@ -16,8 +16,6 @@ package ROOMSERVICES.service;
 
 import ROOMSERVICES.model.RoomType;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -86,11 +84,11 @@ public interface RoomTypeLocalService
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
 	@Transactional(enabled = false)
-	public RoomType createRoomType(RoomTypePK roomTypePK);
+	public RoomType createRoomType(long roomTypeId);
 
 	/**
 	 * @throws PortalException
@@ -98,6 +96,20 @@ public interface RoomTypeLocalService
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
+
+	/**
+	 * Deletes the room type with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect RoomTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param roomTypeId the primary key of the room type
+	 * @return the room type that was removed
+	 * @throws PortalException if a room type with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	public RoomType deleteRoomType(long roomTypeId) throws PortalException;
 
 	/**
 	 * Deletes the room type from the database. Also notifies the appropriate model listeners.
@@ -111,21 +123,6 @@ public interface RoomTypeLocalService
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	public RoomType deleteRoomType(RoomType roomType);
-
-	/**
-	 * Deletes the room type with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect RoomTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param roomTypePK the primary key of the room type
-	 * @return the room type that was removed
-	 * @throws PortalException if a room type with the primary key could not be found
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	public RoomType deleteRoomType(RoomTypePK roomTypePK)
-		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();
@@ -194,7 +191,7 @@ public interface RoomTypeLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public RoomType fetchRoomType(RoomTypePK roomTypePK);
+	public RoomType fetchRoomType(long roomTypeId);
 
 	public List<RoomType> findByroomType(String RoomType)
 		throws SystemException;
@@ -223,12 +220,12 @@ public interface RoomTypeLocalService
 	/**
 	 * Returns the room type with the primary key.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws PortalException if a room type with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public RoomType getRoomType(RoomTypePK roomTypePK) throws PortalException;
+	public RoomType getRoomType(long roomTypeId) throws PortalException;
 
 	/**
 	 * Returns a range of all the room types.

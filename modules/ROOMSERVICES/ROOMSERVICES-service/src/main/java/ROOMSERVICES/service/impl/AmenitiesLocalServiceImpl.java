@@ -14,11 +14,16 @@
 
 package ROOMSERVICES.service.impl;
 
-import ROOMSERVICES.service.base.AmenitiesLocalServiceBaseImpl;
-
-import com.liferay.portal.aop.AopService;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+
+import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import ROOMSERVICES.model.Amenities;
+import ROOMSERVICES.service.base.AmenitiesLocalServiceBaseImpl;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,4 +33,14 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class AmenitiesLocalServiceImpl extends AmenitiesLocalServiceBaseImpl {
+	
+	private static final Log LOGGER = LogFactoryUtil.getLog(AmenitiesLocalServiceImpl.class);
+
+	public List<Amenities> findByIsACAvailable(boolean isACAvailable) {
+		LOGGER.info("inside findByIsACAvailable..!! " );
+		return this.amenitiesPersistence.findByIsACAvailable(isACAvailable);
+		
+	}
+	
+	
 }

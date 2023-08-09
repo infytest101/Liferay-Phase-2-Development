@@ -14,16 +14,15 @@
 
 package ROOMSERVICES.service.impl;
 
-import ROOMSERVICES.model.RoomType;
-import ROOMSERVICES.service.RoomTypeLocalServiceUtil;
-import ROOMSERVICES.service.base.RoomTypeLocalServiceBaseImpl;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import java.util.List;
-
-import org.osgi.service.component.annotations.Component;
+import ROOMSERVICES.model.RoomType;
+import ROOMSERVICES.service.base.RoomTypeLocalServiceBaseImpl;
 
 /**
  * @author Brian Wing Shun Chan
@@ -33,7 +32,9 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class RoomTypeLocalServiceImpl extends RoomTypeLocalServiceBaseImpl {
+	
 	public List<RoomType>findByroomType(String RoomType) throws SystemException {
-		return this.roomTypePersistence.findByRoomType_RoomType(RoomType);
+		return this.roomTypePersistence.findByRoomType(RoomType);
 	}
+	
 }

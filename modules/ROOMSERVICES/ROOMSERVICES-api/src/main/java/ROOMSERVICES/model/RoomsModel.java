@@ -46,28 +46,28 @@ public interface RoomsModel extends BaseModel<Rooms> {
 	 *
 	 * @return the primary key of this rooms
 	 */
-	public int getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this rooms.
 	 *
 	 * @param primaryKey the primary key of this rooms
 	 */
-	public void setPrimaryKey(int primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the room ID of this rooms.
 	 *
 	 * @return the room ID of this rooms
 	 */
-	public int getRoomId();
+	public long getRoomId();
 
 	/**
 	 * Sets the room ID of this rooms.
 	 *
 	 * @param roomId the room ID of this rooms
 	 */
-	public void setRoomId(int roomId);
+	public void setRoomId(long roomId);
 
 	/**
 	 * Returns the room type ID of this rooms.
@@ -111,6 +111,20 @@ public interface RoomsModel extends BaseModel<Rooms> {
 	 * @param roomName the room name of this rooms
 	 */
 	public void setRoomName(String roomName);
+
+	/**
+	 * Returns the price of this rooms.
+	 *
+	 * @return the price of this rooms
+	 */
+	public int getPrice();
+
+	/**
+	 * Sets the price of this rooms.
+	 *
+	 * @param price the price of this rooms
+	 */
+	public void setPrice(int price);
 
 	/**
 	 * Returns the total rooms available of this rooms.

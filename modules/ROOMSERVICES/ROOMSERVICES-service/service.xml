@@ -3,34 +3,74 @@
 
 <service-builder dependency-injector="ds" package-path="ROOMSERVICES">
 	<namespace>Infy</namespace>
+	
     <entity name="RoomType" local-service="true" remote-service="false">
-        <column name="roomTypeId" primary="true" type="int"></column>
-        <column primary="true" name="RoomType" type="String"></column>
-            	<finder name="RoomType_RoomType" return-type="Collection">
-        <finder-column name="RoomType" />
-    </finder>
+    
+        <column name="roomTypeId" type="long" primary="true"></column>
+        <column name="RoomType" type="String"></column>
+        
+        <finder name="RoomType" return-type="Collection">
+        	<finder-column name="RoomType" />
+         </finder>
+
     </entity>
+    
+    
     <entity name="Amenities" local-service="true" remote-service="false" >
-        <column name="amenitiesId" type="int" primary="true"></column>
+    
+        <column name="amenitiesId" type="long" primary="true"></column>
         <column name="isACAvailable" type="Boolean"></column>
         <column name="isSmokingAvailable" type="Boolean"></column>
         <column name="isWifiAvailable" type="Boolean"></column>
-        <column type="Boolean" name="isTVAvailable"></column>
+        <column name="isTVAvailable" type="Boolean"></column>
         <column name="isGeyserAvailable" type="Boolean"></column>
+        
+        <finder name="IsACAvailable" return-type="Collection">
+        	<finder-column name="isACAvailable" />	
+    	</finder>
+    	
+        <finder name="IsSmokingAvailable" return-type="Collection">
+        	<finder-column name="isSmokingAvailable" />	
+    	</finder>
+    	
+        <finder name="IsWifiAvailable" return-type="Collection">
+        	<finder-column name="isWifiAvailable" />	
+    	</finder>
+    	   
+        <finder name="IsTVAvailable" return-type="Collection">
+        	<finder-column name="isTVAvailable" />	
+    	</finder>
+    	   
+        <finder name="IsGeyserAvailable" return-type="Collection">
+        	<finder-column name="isGeyserAvailable" />	
+    	</finder>
+    	
     </entity>
+    
+    
     <entity name="Rooms" local-service="true" remote-service="false">
-        <column name="roomId" type="int" primary="true"></column>
+
+        <column name="roomId" type="long" primary="true"></column>
         <column name="roomTypeId" type="int"></column>
         <column name="amenitiesId" type="int"></column>
         <column name="roomName" type="String"></column>
+        <column name="price" type="int"></column>
         <column name="totalRoomsAvailable" type="int"></column>
         <column name="createDate" type="Date"></column>
         <column name="createBy" type="String"></column>
         <column name="updateDate" type="Date"></column>
         <column name="updatedBy" type="String"></column>
+        
+	    <finder name="RoomName" return-type="Rooms">
+        	<finder-column name="roomName" />
+    	</finder>
+
     </entity>
+    
+    
     <entity name="Customer" local-service="true" remote-service="false">
-        <column name="customerId" primary="true" type="int"></column>
+    
+        <column name="customerId" type="long" primary="true"></column>
         <column name="firstName" type="String"></column>
         <column name="middleName" type="String"></column>
         <column name="lastName" type="String"></column>
@@ -38,8 +78,12 @@
         <column name="mobile" type="String"></column>
         <column name="age" type="int"></column>
         <column name="description" type="String"></column>
+    	
     </entity>
+    
+    
     <entity name="BookingDetails" local-service="true" remote-service="false">
+    
         <column name="bookingDetailsId" type="long" primary="true"></column>
         <column name="roomId" type="int"></column>
         <column name="customerId" type="int"></column>
@@ -50,6 +94,8 @@
         <column name="totalRoomsBooked" type="int"></column>
         <column name="bookingStartDate" type="Date"></column>
         <column name="bookingEndDate" type="Date"></column>
+        
     </entity>
+
 
 </service-builder>

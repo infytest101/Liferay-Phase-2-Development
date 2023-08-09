@@ -65,7 +65,7 @@ public class AmenitiesLocalServiceUtil {
 	 * @param amenitiesId the primary key for the new amenities
 	 * @return the new amenities
 	 */
-	public static Amenities createAmenities(int amenitiesId) {
+	public static Amenities createAmenities(long amenitiesId) {
 		return getService().createAmenities(amenitiesId);
 	}
 
@@ -104,7 +104,7 @@ public class AmenitiesLocalServiceUtil {
 	 * @return the amenities that was removed
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
-	public static Amenities deleteAmenities(int amenitiesId)
+	public static Amenities deleteAmenities(long amenitiesId)
 		throws PortalException {
 
 		return getService().deleteAmenities(amenitiesId);
@@ -197,8 +197,12 @@ public class AmenitiesLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static Amenities fetchAmenities(int amenitiesId) {
+	public static Amenities fetchAmenities(long amenitiesId) {
 		return getService().fetchAmenities(amenitiesId);
+	}
+
+	public static List<Amenities> findByIsACAvailable(boolean isACAvailable) {
+		return getService().findByIsACAvailable(isACAvailable);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -214,7 +218,7 @@ public class AmenitiesLocalServiceUtil {
 	 * @return the amenities
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
-	public static Amenities getAmenities(int amenitiesId)
+	public static Amenities getAmenities(long amenitiesId)
 		throws PortalException {
 
 		return getService().getAmenities(amenitiesId);

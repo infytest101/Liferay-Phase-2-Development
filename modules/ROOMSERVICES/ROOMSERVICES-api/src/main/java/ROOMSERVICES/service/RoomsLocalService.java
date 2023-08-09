@@ -14,6 +14,8 @@
 
 package ROOMSERVICES.service;
 
+import ROOMSERVICES.exception.NoSuchRoomsException;
+
 import ROOMSERVICES.model.Rooms;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -61,7 +63,6 @@ public interface RoomsLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>ROOMSERVICES.service.impl.RoomsLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the rooms local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link RoomsLocalServiceUtil} if injection and service tracking are not available.
 	 */
-	public String addRoomDetails(String amenitiesjsonData, String formData);
 
 	/**
 	 * Adds the rooms to the database. Also notifies the appropriate model listeners.
@@ -89,7 +90,7 @@ public interface RoomsLocalService
 	 * @return the new rooms
 	 */
 	@Transactional(enabled = false)
-	public Rooms createRooms(int roomId);
+	public Rooms createRooms(long roomId);
 
 	/**
 	 * @throws PortalException
@@ -110,7 +111,7 @@ public interface RoomsLocalService
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public Rooms deleteRooms(int roomId) throws PortalException;
+	public Rooms deleteRooms(long roomId) throws PortalException;
 
 	/**
 	 * Deletes the rooms from the database. Also notifies the appropriate model listeners.
@@ -192,7 +193,9 @@ public interface RoomsLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Rooms fetchRooms(int roomId);
+	public Rooms fetchRooms(long roomId);
+
+	public Rooms findByRoomName(String roomName) throws NoSuchRoomsException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -223,7 +226,7 @@ public interface RoomsLocalService
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Rooms getRooms(int roomId) throws PortalException;
+	public Rooms getRooms(long roomId) throws PortalException;
 
 	/**
 	 * Returns a range of all the roomses.

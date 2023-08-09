@@ -85,19 +85,19 @@ public class CustomerSoap implements Serializable {
 	public CustomerSoap() {
 	}
 
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _customerId;
 	}
 
-	public void setPrimaryKey(int pk) {
+	public void setPrimaryKey(long pk) {
 		setCustomerId(pk);
 	}
 
-	public int getCustomerId() {
+	public long getCustomerId() {
 		return _customerId;
 	}
 
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(long customerId) {
 		_customerId = customerId;
 	}
 
@@ -157,7 +157,7 @@ public class CustomerSoap implements Serializable {
 		_description = description;
 	}
 
-	private int _customerId;
+	private long _customerId;
 	private String _firstName;
 	private String _middleName;
 	private String _lastName;

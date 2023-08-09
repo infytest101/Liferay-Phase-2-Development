@@ -43,6 +43,724 @@ public interface AmenitiesPersistence extends BasePersistence<Amenities> {
 	 */
 
 	/**
+	 * Returns all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @return the matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsACAvailable(Boolean isACAvailable);
+
+	/**
+	 * Returns a range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsACAvailable_First(
+			Boolean isACAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the first amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsACAvailable_First(
+		Boolean isACAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the last amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsACAvailable_Last(
+			Boolean isACAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the last amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsACAvailable_Last(
+		Boolean isACAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	public Amenities[] findByIsACAvailable_PrevAndNext(
+			long amenitiesId, Boolean isACAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Removes all the amenitieses where isACAvailable = &#63; from the database.
+	 *
+	 * @param isACAvailable the is ac available
+	 */
+	public void removeByIsACAvailable(Boolean isACAvailable);
+
+	/**
+	 * Returns the number of amenitieses where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @return the number of matching amenitieses
+	 */
+	public int countByIsACAvailable(Boolean isACAvailable);
+
+	/**
+	 * Returns all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @return the matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable);
+
+	/**
+	 * Returns a range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsSmokingAvailable_First(
+			Boolean isSmokingAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the first amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsSmokingAvailable_First(
+		Boolean isSmokingAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the last amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsSmokingAvailable_Last(
+			Boolean isSmokingAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the last amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsSmokingAvailable_Last(
+		Boolean isSmokingAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	public Amenities[] findByIsSmokingAvailable_PrevAndNext(
+			long amenitiesId, Boolean isSmokingAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Removes all the amenitieses where isSmokingAvailable = &#63; from the database.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 */
+	public void removeByIsSmokingAvailable(Boolean isSmokingAvailable);
+
+	/**
+	 * Returns the number of amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @return the number of matching amenitieses
+	 */
+	public int countByIsSmokingAvailable(Boolean isSmokingAvailable);
+
+	/**
+	 * Returns all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @return the matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable);
+
+	/**
+	 * Returns a range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsWifiAvailable_First(
+			Boolean isWifiAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the first amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsWifiAvailable_First(
+		Boolean isWifiAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the last amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsWifiAvailable_Last(
+			Boolean isWifiAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the last amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsWifiAvailable_Last(
+		Boolean isWifiAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	public Amenities[] findByIsWifiAvailable_PrevAndNext(
+			long amenitiesId, Boolean isWifiAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Removes all the amenitieses where isWifiAvailable = &#63; from the database.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 */
+	public void removeByIsWifiAvailable(Boolean isWifiAvailable);
+
+	/**
+	 * Returns the number of amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @return the number of matching amenitieses
+	 */
+	public int countByIsWifiAvailable(Boolean isWifiAvailable);
+
+	/**
+	 * Returns all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @return the matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsTVAvailable(Boolean isTVAvailable);
+
+	/**
+	 * Returns a range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsTVAvailable_First(
+			Boolean isTVAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the first amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsTVAvailable_First(
+		Boolean isTVAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the last amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsTVAvailable_Last(
+			Boolean isTVAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the last amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsTVAvailable_Last(
+		Boolean isTVAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	public Amenities[] findByIsTVAvailable_PrevAndNext(
+			long amenitiesId, Boolean isTVAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Removes all the amenitieses where isTVAvailable = &#63; from the database.
+	 *
+	 * @param isTVAvailable the is tv available
+	 */
+	public void removeByIsTVAvailable(Boolean isTVAvailable);
+
+	/**
+	 * Returns the number of amenitieses where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @return the number of matching amenitieses
+	 */
+	public int countByIsTVAvailable(Boolean isTVAvailable);
+
+	/**
+	 * Returns all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @return the matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable);
+
+	/**
+	 * Returns a range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	public java.util.List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsGeyserAvailable_First(
+			Boolean isGeyserAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the first amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsGeyserAvailable_First(
+		Boolean isGeyserAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the last amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	public Amenities findByIsGeyserAvailable_Last(
+			Boolean isGeyserAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Returns the last amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	public Amenities fetchByIsGeyserAvailable_Last(
+		Boolean isGeyserAvailable,
+		com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+			orderByComparator);
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	public Amenities[] findByIsGeyserAvailable_PrevAndNext(
+			long amenitiesId, Boolean isGeyserAvailable,
+			com.liferay.portal.kernel.util.OrderByComparator<Amenities>
+				orderByComparator)
+		throws NoSuchAmenitiesException;
+
+	/**
+	 * Removes all the amenitieses where isGeyserAvailable = &#63; from the database.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 */
+	public void removeByIsGeyserAvailable(Boolean isGeyserAvailable);
+
+	/**
+	 * Returns the number of amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @return the number of matching amenitieses
+	 */
+	public int countByIsGeyserAvailable(Boolean isGeyserAvailable);
+
+	/**
 	 * Caches the amenities in the entity cache if it is enabled.
 	 *
 	 * @param amenities the amenities
@@ -62,7 +780,7 @@ public interface AmenitiesPersistence extends BasePersistence<Amenities> {
 	 * @param amenitiesId the primary key for the new amenities
 	 * @return the new amenities
 	 */
-	public Amenities create(int amenitiesId);
+	public Amenities create(long amenitiesId);
 
 	/**
 	 * Removes the amenities with the primary key from the database. Also notifies the appropriate model listeners.
@@ -71,7 +789,7 @@ public interface AmenitiesPersistence extends BasePersistence<Amenities> {
 	 * @return the amenities that was removed
 	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
 	 */
-	public Amenities remove(int amenitiesId) throws NoSuchAmenitiesException;
+	public Amenities remove(long amenitiesId) throws NoSuchAmenitiesException;
 
 	public Amenities updateImpl(Amenities amenities);
 
@@ -82,7 +800,7 @@ public interface AmenitiesPersistence extends BasePersistence<Amenities> {
 	 * @return the amenities
 	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
 	 */
-	public Amenities findByPrimaryKey(int amenitiesId)
+	public Amenities findByPrimaryKey(long amenitiesId)
 		throws NoSuchAmenitiesException;
 
 	/**
@@ -91,7 +809,7 @@ public interface AmenitiesPersistence extends BasePersistence<Amenities> {
 	 * @param amenitiesId the primary key of the amenities
 	 * @return the amenities, or <code>null</code> if a amenities with the primary key could not be found
 	 */
-	public Amenities fetchByPrimaryKey(int amenitiesId);
+	public Amenities fetchByPrimaryKey(long amenitiesId);
 
 	/**
 	 * Returns all the amenitieses.

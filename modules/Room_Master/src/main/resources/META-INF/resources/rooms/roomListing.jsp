@@ -1,10 +1,15 @@
+
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ page import="Room_Master.ViewDto.RoomPriceTypeDto" %>
+   <%@ include file="/init.jsp" %>
 <%@page import="java.util.ArrayList" %>
-<%@ include file="/init.jsp" %>
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
+<portlet:defineObjects />
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,30 +26,90 @@ href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 <link rel="stylesheet" type="text/css"
 href="https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css" />
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
- <style>
- td,th,h1{
-	 text-align:center
-	 }
+<style>
 	 .rm,#roomid,.tra,.trb,#totalRoomAvaliable,#totalRoomBooked{
 	 display:none
 	 }
- </style>
- </head>
+	 #manageroom,#managebooking{
+	 color:#33ffff;
+	 }
+/* ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0px;
+  overflow: hidden;
+  background-color: lightgray;
+} */
+
+/* li {
+  float: left;
+} */
+
+/* li a {
+  display: block;
+  color: white;
+ font-size:20px;
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+} */
+/* .active{
+ background-color:#33ffff;
+color: white;
+} */
+/* li a:hover {
+  background-color: green;
+  color: white;
+} */
+</style>
+</head>
 <body>
-<portlet:renderURL var="addRoomUrl">
-<portlet:param name="mvcRenderCommandName" value="addRoom"/>
-</portlet:renderURL>
+<!-- <p>
+	<b><liferay-ui:message key="room_master.caption"/></b>
+</p> -->
+<h2>HOTEL MANAGMENT SYSTEM</h2>
+<!-- <h1>Room Listing</h1> -->
+<p>Add Logic for Room Listing</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" id="manageroom" href="<portlet:renderURL><portlet:param name='page' value='manageRoom' /></portlet:renderURL>">Manage Room</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="managebooking" href="<portlet:renderURL><portlet:param name='page' value='manageBooking' /></portlet:renderURL>">Manage Booking</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="content">
+  <portlet:renderURL var="renderURL">
+    <portlet:param name="page" value="<%= (String) renderRequest.getAttribute("page") %>" />
+  </portlet:renderURL>
+
+  <portlet:renderURL var="manageRoomURL">
+    <portlet:param name="page" value="manageRoom" />
+  </portlet:renderURL>
+
+  <portlet:renderURL var="manageBookingURL">
+    <portlet:param name="page" value="manageBooking" />
+  </portlet:renderURL>
+  
 <portlet:renderURL var="editRoomURL">
 <portlet:param name="page" value="updateRoom=updateRoom&"/>
 <portlet:param name="Encodingvalue" value="${Encodingvalue}"/>
 </portlet:renderURL>
-<h1>HOTEL MANAGMENT SYSTEM</h1>
-<!-- Filter>>>
-from Date::<input type="date" id="fromDateFilter" name="fromDate">
-to Date::<input type="date" id="toDateFilter" name="toDate">
-RoomType:<select id="mycombo" name="roomtype"></select>
-<button id="searchid"class="btn btn-dark">Search</button> -->
-<!-- <button class="btn btn-secondary">Search</button> -->
+  <aui:script>
+    function redirectManageRoom() {
+      window.location.href = "<%= manageRoomURL %>";
+    }
+  </aui:script>
+  
+</div>
+
 <table id="Hotel" class="table table-bordered table-striped"style="width: 100%">
 <thead>
 	<tr>
@@ -64,9 +129,6 @@ RoomType:<select id="mycombo" name="roomtype"></select>
 <tbody>
 </tbody>
 </table>
-
-<aui:button id="button" type ="submit" value ="Add Room"onClick="<%= addRoomUrl.toString()%>"></aui:button>
- 
 <script>
 
 
@@ -152,12 +214,13 @@ function editdata(value){
 			  if(rmval==true) {
 				  //window.location.href = "/infy/deleteroomdetails/"+rowdata111;
 		 	  $.ajax({
-					type :'GET',
-					url:"/infy/deleteroomdetails?roomid="+rowdata111+"&roomType="+rmtydt,
+					type :'DELETE',
+					url:"/o/infy/deleteroomdetails?roomid="+rowdata111,
 					success: function(result) {
 						if(result ==='deletedata') {
 							//window.location.href = "/infy/deleteroomdetails/"+rowdata111;
 							showMassage("Room Record Deleted SucessFully",5000,"red");
+							window.location.reload();
 							//refreshTable();
 							 
 							}
@@ -194,7 +257,7 @@ function editdata(value){
 						  var encodedRowdata = encodeURIComponent(rowdata);
 						 var rowdata1=JSON.stringify(encodedRowdata);
 						  var editRoomURL = '<%= editRoomURL %>'
-						 editRoomURL += editRoomURL.replace('${Encodingvalue}',Encodingvalue);
+						 	editRoomURL += editRoomURL.replace('${Encodingvalue}',Encodingvalue);
 						  window.location.href  = editRoomURL;
 	/* 		  $.ajax({
 				 	url:'/infy/editroomdetails1?',
@@ -363,15 +426,13 @@ $(document).ready(function () {
 	
 	
 	
-	$.ajax({
+/* 	$.ajax({
 		type :'GET',
 		url:'/o/infy/fetchAllRoooms',
 		success: function(result) {
           console.log("value addded:::::"+result);
-          dataList=result;
-  /*         dataList = dataList1.sort(function (a, b) {
-              return String(a.roomtypedata).localeCompare(String(b.roomtypedata));
-            }); */
+          dataList=result; */
+          dataList=${RoomPriceTypeDto};
           console.log("value addded:::::"+dataList)
        for (var i=0;i<dataList.length; i++) { 
        var roomType = dataList[i]; 
@@ -428,14 +489,9 @@ if(checkwifi){
       $(newrow).find('td:eq(8)').attr('data-field-name','wifitv');
       $(newrow).find('td:eq(9)').attr('data-field-name','action');
        }
-		},
-         error:function(xhr,status,error){
-			console.error(error);
-			showMassage("Error occured while fetching room record,Please contact admin",5000,"red");
-			
-           }
+          });
 		
-	});
+//	});
 	
 	
 		
@@ -461,7 +517,7 @@ if(checkwifi){
 			comboBox.append($('<option>').text(value).val(value));
 		});
 	}*/
-});
+
 </script>
 </body>
 </html>

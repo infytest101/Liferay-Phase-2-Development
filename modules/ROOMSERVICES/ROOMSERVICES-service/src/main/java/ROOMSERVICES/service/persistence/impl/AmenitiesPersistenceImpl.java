@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -43,14 +44,17 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -94,12 +98,2539 @@ public class AmenitiesPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByIsACAvailable;
+	private FinderPath _finderPathWithoutPaginationFindByIsACAvailable;
+	private FinderPath _finderPathCountByIsACAvailable;
+
+	/**
+	 * Returns all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @return the matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsACAvailable(Boolean isACAvailable) {
+		return findByIsACAvailable(
+			isACAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end) {
+
+		return findByIsACAvailable(isACAvailable, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		return findByIsACAvailable(
+			isACAvailable, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isACAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsACAvailable(
+		Boolean isACAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByIsACAvailable;
+				finderArgs = new Object[] {isACAvailable};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByIsACAvailable;
+			finderArgs = new Object[] {
+				isACAvailable, start, end, orderByComparator
+			};
+		}
+
+		List<Amenities> list = null;
+
+		if (useFinderCache) {
+			list = (List<Amenities>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Amenities amenities : list) {
+					if (!Objects.equals(
+							isACAvailable, amenities.getIsACAvailable())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISACAVAILABLE_ISACAVAILABLE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isACAvailable.booleanValue());
+
+				list = (List<Amenities>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsACAvailable_First(
+			Boolean isACAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsACAvailable_First(
+			isACAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isACAvailable=");
+		sb.append(isACAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsACAvailable_First(
+		Boolean isACAvailable, OrderByComparator<Amenities> orderByComparator) {
+
+		List<Amenities> list = findByIsACAvailable(
+			isACAvailable, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsACAvailable_Last(
+			Boolean isACAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsACAvailable_Last(
+			isACAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isACAvailable=");
+		sb.append(isACAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsACAvailable_Last(
+		Boolean isACAvailable, OrderByComparator<Amenities> orderByComparator) {
+
+		int count = countByIsACAvailable(isACAvailable);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Amenities> list = findByIsACAvailable(
+			isACAvailable, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isACAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isACAvailable the is ac available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	@Override
+	public Amenities[] findByIsACAvailable_PrevAndNext(
+			long amenitiesId, Boolean isACAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = findByPrimaryKey(amenitiesId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Amenities[] array = new AmenitiesImpl[3];
+
+			array[0] = getByIsACAvailable_PrevAndNext(
+				session, amenities, isACAvailable, orderByComparator, true);
+
+			array[1] = amenities;
+
+			array[2] = getByIsACAvailable_PrevAndNext(
+				session, amenities, isACAvailable, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Amenities getByIsACAvailable_PrevAndNext(
+		Session session, Amenities amenities, Boolean isACAvailable,
+		OrderByComparator<Amenities> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+		sb.append(_FINDER_COLUMN_ISACAVAILABLE_ISACAVAILABLE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(isACAvailable.booleanValue());
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(amenities)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Amenities> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the amenitieses where isACAvailable = &#63; from the database.
+	 *
+	 * @param isACAvailable the is ac available
+	 */
+	@Override
+	public void removeByIsACAvailable(Boolean isACAvailable) {
+		for (Amenities amenities :
+				findByIsACAvailable(
+					isACAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(amenities);
+		}
+	}
+
+	/**
+	 * Returns the number of amenitieses where isACAvailable = &#63;.
+	 *
+	 * @param isACAvailable the is ac available
+	 * @return the number of matching amenitieses
+	 */
+	@Override
+	public int countByIsACAvailable(Boolean isACAvailable) {
+		FinderPath finderPath = _finderPathCountByIsACAvailable;
+
+		Object[] finderArgs = new Object[] {isACAvailable};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISACAVAILABLE_ISACAVAILABLE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isACAvailable.booleanValue());
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ISACAVAILABLE_ISACAVAILABLE_2 =
+		"amenities.isACAvailable = ?";
+
+	private FinderPath _finderPathWithPaginationFindByIsSmokingAvailable;
+	private FinderPath _finderPathWithoutPaginationFindByIsSmokingAvailable;
+	private FinderPath _finderPathCountByIsSmokingAvailable;
+
+	/**
+	 * Returns all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @return the matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable) {
+
+		return findByIsSmokingAvailable(
+			isSmokingAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end) {
+
+		return findByIsSmokingAvailable(isSmokingAvailable, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		return findByIsSmokingAvailable(
+			isSmokingAvailable, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsSmokingAvailable(
+		Boolean isSmokingAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath =
+					_finderPathWithoutPaginationFindByIsSmokingAvailable;
+				finderArgs = new Object[] {isSmokingAvailable};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByIsSmokingAvailable;
+			finderArgs = new Object[] {
+				isSmokingAvailable, start, end, orderByComparator
+			};
+		}
+
+		List<Amenities> list = null;
+
+		if (useFinderCache) {
+			list = (List<Amenities>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Amenities amenities : list) {
+					if (!Objects.equals(
+							isSmokingAvailable,
+							amenities.getIsSmokingAvailable())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISSMOKINGAVAILABLE_ISSMOKINGAVAILABLE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isSmokingAvailable.booleanValue());
+
+				list = (List<Amenities>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsSmokingAvailable_First(
+			Boolean isSmokingAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsSmokingAvailable_First(
+			isSmokingAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isSmokingAvailable=");
+		sb.append(isSmokingAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsSmokingAvailable_First(
+		Boolean isSmokingAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		List<Amenities> list = findByIsSmokingAvailable(
+			isSmokingAvailable, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsSmokingAvailable_Last(
+			Boolean isSmokingAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsSmokingAvailable_Last(
+			isSmokingAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isSmokingAvailable=");
+		sb.append(isSmokingAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsSmokingAvailable_Last(
+		Boolean isSmokingAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		int count = countByIsSmokingAvailable(isSmokingAvailable);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Amenities> list = findByIsSmokingAvailable(
+			isSmokingAvailable, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isSmokingAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isSmokingAvailable the is smoking available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	@Override
+	public Amenities[] findByIsSmokingAvailable_PrevAndNext(
+			long amenitiesId, Boolean isSmokingAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = findByPrimaryKey(amenitiesId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Amenities[] array = new AmenitiesImpl[3];
+
+			array[0] = getByIsSmokingAvailable_PrevAndNext(
+				session, amenities, isSmokingAvailable, orderByComparator,
+				true);
+
+			array[1] = amenities;
+
+			array[2] = getByIsSmokingAvailable_PrevAndNext(
+				session, amenities, isSmokingAvailable, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Amenities getByIsSmokingAvailable_PrevAndNext(
+		Session session, Amenities amenities, Boolean isSmokingAvailable,
+		OrderByComparator<Amenities> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+		sb.append(_FINDER_COLUMN_ISSMOKINGAVAILABLE_ISSMOKINGAVAILABLE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(isSmokingAvailable.booleanValue());
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(amenities)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Amenities> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the amenitieses where isSmokingAvailable = &#63; from the database.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 */
+	@Override
+	public void removeByIsSmokingAvailable(Boolean isSmokingAvailable) {
+		for (Amenities amenities :
+				findByIsSmokingAvailable(
+					isSmokingAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(amenities);
+		}
+	}
+
+	/**
+	 * Returns the number of amenitieses where isSmokingAvailable = &#63;.
+	 *
+	 * @param isSmokingAvailable the is smoking available
+	 * @return the number of matching amenitieses
+	 */
+	@Override
+	public int countByIsSmokingAvailable(Boolean isSmokingAvailable) {
+		FinderPath finderPath = _finderPathCountByIsSmokingAvailable;
+
+		Object[] finderArgs = new Object[] {isSmokingAvailable};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISSMOKINGAVAILABLE_ISSMOKINGAVAILABLE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isSmokingAvailable.booleanValue());
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_ISSMOKINGAVAILABLE_ISSMOKINGAVAILABLE_2 =
+			"amenities.isSmokingAvailable = ?";
+
+	private FinderPath _finderPathWithPaginationFindByIsWifiAvailable;
+	private FinderPath _finderPathWithoutPaginationFindByIsWifiAvailable;
+	private FinderPath _finderPathCountByIsWifiAvailable;
+
+	/**
+	 * Returns all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @return the matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsWifiAvailable(Boolean isWifiAvailable) {
+		return findByIsWifiAvailable(
+			isWifiAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end) {
+
+		return findByIsWifiAvailable(isWifiAvailable, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		return findByIsWifiAvailable(
+			isWifiAvailable, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsWifiAvailable(
+		Boolean isWifiAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByIsWifiAvailable;
+				finderArgs = new Object[] {isWifiAvailable};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByIsWifiAvailable;
+			finderArgs = new Object[] {
+				isWifiAvailable, start, end, orderByComparator
+			};
+		}
+
+		List<Amenities> list = null;
+
+		if (useFinderCache) {
+			list = (List<Amenities>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Amenities amenities : list) {
+					if (!Objects.equals(
+							isWifiAvailable, amenities.getIsWifiAvailable())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISWIFIAVAILABLE_ISWIFIAVAILABLE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isWifiAvailable.booleanValue());
+
+				list = (List<Amenities>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsWifiAvailable_First(
+			Boolean isWifiAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsWifiAvailable_First(
+			isWifiAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isWifiAvailable=");
+		sb.append(isWifiAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsWifiAvailable_First(
+		Boolean isWifiAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		List<Amenities> list = findByIsWifiAvailable(
+			isWifiAvailable, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsWifiAvailable_Last(
+			Boolean isWifiAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsWifiAvailable_Last(
+			isWifiAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isWifiAvailable=");
+		sb.append(isWifiAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsWifiAvailable_Last(
+		Boolean isWifiAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		int count = countByIsWifiAvailable(isWifiAvailable);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Amenities> list = findByIsWifiAvailable(
+			isWifiAvailable, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isWifiAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isWifiAvailable the is wifi available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	@Override
+	public Amenities[] findByIsWifiAvailable_PrevAndNext(
+			long amenitiesId, Boolean isWifiAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = findByPrimaryKey(amenitiesId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Amenities[] array = new AmenitiesImpl[3];
+
+			array[0] = getByIsWifiAvailable_PrevAndNext(
+				session, amenities, isWifiAvailable, orderByComparator, true);
+
+			array[1] = amenities;
+
+			array[2] = getByIsWifiAvailable_PrevAndNext(
+				session, amenities, isWifiAvailable, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Amenities getByIsWifiAvailable_PrevAndNext(
+		Session session, Amenities amenities, Boolean isWifiAvailable,
+		OrderByComparator<Amenities> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+		sb.append(_FINDER_COLUMN_ISWIFIAVAILABLE_ISWIFIAVAILABLE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(isWifiAvailable.booleanValue());
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(amenities)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Amenities> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the amenitieses where isWifiAvailable = &#63; from the database.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 */
+	@Override
+	public void removeByIsWifiAvailable(Boolean isWifiAvailable) {
+		for (Amenities amenities :
+				findByIsWifiAvailable(
+					isWifiAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(amenities);
+		}
+	}
+
+	/**
+	 * Returns the number of amenitieses where isWifiAvailable = &#63;.
+	 *
+	 * @param isWifiAvailable the is wifi available
+	 * @return the number of matching amenitieses
+	 */
+	@Override
+	public int countByIsWifiAvailable(Boolean isWifiAvailable) {
+		FinderPath finderPath = _finderPathCountByIsWifiAvailable;
+
+		Object[] finderArgs = new Object[] {isWifiAvailable};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISWIFIAVAILABLE_ISWIFIAVAILABLE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isWifiAvailable.booleanValue());
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_ISWIFIAVAILABLE_ISWIFIAVAILABLE_2 =
+			"amenities.isWifiAvailable = ?";
+
+	private FinderPath _finderPathWithPaginationFindByIsTVAvailable;
+	private FinderPath _finderPathWithoutPaginationFindByIsTVAvailable;
+	private FinderPath _finderPathCountByIsTVAvailable;
+
+	/**
+	 * Returns all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @return the matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsTVAvailable(Boolean isTVAvailable) {
+		return findByIsTVAvailable(
+			isTVAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end) {
+
+		return findByIsTVAvailable(isTVAvailable, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		return findByIsTVAvailable(
+			isTVAvailable, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isTVAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsTVAvailable(
+		Boolean isTVAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByIsTVAvailable;
+				finderArgs = new Object[] {isTVAvailable};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByIsTVAvailable;
+			finderArgs = new Object[] {
+				isTVAvailable, start, end, orderByComparator
+			};
+		}
+
+		List<Amenities> list = null;
+
+		if (useFinderCache) {
+			list = (List<Amenities>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Amenities amenities : list) {
+					if (!Objects.equals(
+							isTVAvailable, amenities.getIsTVAvailable())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISTVAVAILABLE_ISTVAVAILABLE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isTVAvailable.booleanValue());
+
+				list = (List<Amenities>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsTVAvailable_First(
+			Boolean isTVAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsTVAvailable_First(
+			isTVAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isTVAvailable=");
+		sb.append(isTVAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsTVAvailable_First(
+		Boolean isTVAvailable, OrderByComparator<Amenities> orderByComparator) {
+
+		List<Amenities> list = findByIsTVAvailable(
+			isTVAvailable, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsTVAvailable_Last(
+			Boolean isTVAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsTVAvailable_Last(
+			isTVAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isTVAvailable=");
+		sb.append(isTVAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsTVAvailable_Last(
+		Boolean isTVAvailable, OrderByComparator<Amenities> orderByComparator) {
+
+		int count = countByIsTVAvailable(isTVAvailable);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Amenities> list = findByIsTVAvailable(
+			isTVAvailable, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isTVAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isTVAvailable the is tv available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	@Override
+	public Amenities[] findByIsTVAvailable_PrevAndNext(
+			long amenitiesId, Boolean isTVAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = findByPrimaryKey(amenitiesId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Amenities[] array = new AmenitiesImpl[3];
+
+			array[0] = getByIsTVAvailable_PrevAndNext(
+				session, amenities, isTVAvailable, orderByComparator, true);
+
+			array[1] = amenities;
+
+			array[2] = getByIsTVAvailable_PrevAndNext(
+				session, amenities, isTVAvailable, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Amenities getByIsTVAvailable_PrevAndNext(
+		Session session, Amenities amenities, Boolean isTVAvailable,
+		OrderByComparator<Amenities> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+		sb.append(_FINDER_COLUMN_ISTVAVAILABLE_ISTVAVAILABLE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(isTVAvailable.booleanValue());
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(amenities)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Amenities> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the amenitieses where isTVAvailable = &#63; from the database.
+	 *
+	 * @param isTVAvailable the is tv available
+	 */
+	@Override
+	public void removeByIsTVAvailable(Boolean isTVAvailable) {
+		for (Amenities amenities :
+				findByIsTVAvailable(
+					isTVAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(amenities);
+		}
+	}
+
+	/**
+	 * Returns the number of amenitieses where isTVAvailable = &#63;.
+	 *
+	 * @param isTVAvailable the is tv available
+	 * @return the number of matching amenitieses
+	 */
+	@Override
+	public int countByIsTVAvailable(Boolean isTVAvailable) {
+		FinderPath finderPath = _finderPathCountByIsTVAvailable;
+
+		Object[] finderArgs = new Object[] {isTVAvailable};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISTVAVAILABLE_ISTVAVAILABLE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isTVAvailable.booleanValue());
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ISTVAVAILABLE_ISTVAVAILABLE_2 =
+		"amenities.isTVAvailable = ?";
+
+	private FinderPath _finderPathWithPaginationFindByIsGeyserAvailable;
+	private FinderPath _finderPathWithoutPaginationFindByIsGeyserAvailable;
+	private FinderPath _finderPathCountByIsGeyserAvailable;
+
+	/**
+	 * Returns all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @return the matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsGeyserAvailable(Boolean isGeyserAvailable) {
+		return findByIsGeyserAvailable(
+			isGeyserAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @return the range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end) {
+
+		return findByIsGeyserAvailable(isGeyserAvailable, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		return findByIsGeyserAvailable(
+			isGeyserAvailable, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AmenitiesModelImpl</code>.
+	 * </p>
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param start the lower bound of the range of amenitieses
+	 * @param end the upper bound of the range of amenitieses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching amenitieses
+	 */
+	@Override
+	public List<Amenities> findByIsGeyserAvailable(
+		Boolean isGeyserAvailable, int start, int end,
+		OrderByComparator<Amenities> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath =
+					_finderPathWithoutPaginationFindByIsGeyserAvailable;
+				finderArgs = new Object[] {isGeyserAvailable};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByIsGeyserAvailable;
+			finderArgs = new Object[] {
+				isGeyserAvailable, start, end, orderByComparator
+			};
+		}
+
+		List<Amenities> list = null;
+
+		if (useFinderCache) {
+			list = (List<Amenities>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Amenities amenities : list) {
+					if (!Objects.equals(
+							isGeyserAvailable,
+							amenities.getIsGeyserAvailable())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISGEYSERAVAILABLE_ISGEYSERAVAILABLE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isGeyserAvailable.booleanValue());
+
+				list = (List<Amenities>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsGeyserAvailable_First(
+			Boolean isGeyserAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsGeyserAvailable_First(
+			isGeyserAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isGeyserAvailable=");
+		sb.append(isGeyserAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the first amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsGeyserAvailable_First(
+		Boolean isGeyserAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		List<Amenities> list = findByIsGeyserAvailable(
+			isGeyserAvailable, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities
+	 * @throws NoSuchAmenitiesException if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities findByIsGeyserAvailable_Last(
+			Boolean isGeyserAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = fetchByIsGeyserAvailable_Last(
+			isGeyserAvailable, orderByComparator);
+
+		if (amenities != null) {
+			return amenities;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("isGeyserAvailable=");
+		sb.append(isGeyserAvailable);
+
+		sb.append("}");
+
+		throw new NoSuchAmenitiesException(sb.toString());
+	}
+
+	/**
+	 * Returns the last amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching amenities, or <code>null</code> if a matching amenities could not be found
+	 */
+	@Override
+	public Amenities fetchByIsGeyserAvailable_Last(
+		Boolean isGeyserAvailable,
+		OrderByComparator<Amenities> orderByComparator) {
+
+		int count = countByIsGeyserAvailable(isGeyserAvailable);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Amenities> list = findByIsGeyserAvailable(
+			isGeyserAvailable, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the amenitieses before and after the current amenities in the ordered set where isGeyserAvailable = &#63;.
+	 *
+	 * @param amenitiesId the primary key of the current amenities
+	 * @param isGeyserAvailable the is geyser available
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next amenities
+	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
+	 */
+	@Override
+	public Amenities[] findByIsGeyserAvailable_PrevAndNext(
+			long amenitiesId, Boolean isGeyserAvailable,
+			OrderByComparator<Amenities> orderByComparator)
+		throws NoSuchAmenitiesException {
+
+		Amenities amenities = findByPrimaryKey(amenitiesId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Amenities[] array = new AmenitiesImpl[3];
+
+			array[0] = getByIsGeyserAvailable_PrevAndNext(
+				session, amenities, isGeyserAvailable, orderByComparator, true);
+
+			array[1] = amenities;
+
+			array[2] = getByIsGeyserAvailable_PrevAndNext(
+				session, amenities, isGeyserAvailable, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Amenities getByIsGeyserAvailable_PrevAndNext(
+		Session session, Amenities amenities, Boolean isGeyserAvailable,
+		OrderByComparator<Amenities> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_AMENITIES_WHERE);
+
+		sb.append(_FINDER_COLUMN_ISGEYSERAVAILABLE_ISGEYSERAVAILABLE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AmenitiesModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(isGeyserAvailable.booleanValue());
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(amenities)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Amenities> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the amenitieses where isGeyserAvailable = &#63; from the database.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 */
+	@Override
+	public void removeByIsGeyserAvailable(Boolean isGeyserAvailable) {
+		for (Amenities amenities :
+				findByIsGeyserAvailable(
+					isGeyserAvailable, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(amenities);
+		}
+	}
+
+	/**
+	 * Returns the number of amenitieses where isGeyserAvailable = &#63;.
+	 *
+	 * @param isGeyserAvailable the is geyser available
+	 * @return the number of matching amenitieses
+	 */
+	@Override
+	public int countByIsGeyserAvailable(Boolean isGeyserAvailable) {
+		FinderPath finderPath = _finderPathCountByIsGeyserAvailable;
+
+		Object[] finderArgs = new Object[] {isGeyserAvailable};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_AMENITIES_WHERE);
+
+			sb.append(_FINDER_COLUMN_ISGEYSERAVAILABLE_ISGEYSERAVAILABLE_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(isGeyserAvailable.booleanValue());
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_ISGEYSERAVAILABLE_ISGEYSERAVAILABLE_2 =
+			"amenities.isGeyserAvailable = ?";
 
 	public AmenitiesPersistenceImpl() {
 		setModelClass(Amenities.class);
 
 		setModelImplClass(AmenitiesImpl.class);
-		setModelPKClass(int.class);
+		setModelPKClass(long.class);
 	}
 
 	/**
@@ -191,7 +2722,7 @@ public class AmenitiesPersistenceImpl
 	 * @return the new amenities
 	 */
 	@Override
-	public Amenities create(int amenitiesId) {
+	public Amenities create(long amenitiesId) {
 		Amenities amenities = new AmenitiesImpl();
 
 		amenities.setNew(true);
@@ -208,7 +2739,7 @@ public class AmenitiesPersistenceImpl
 	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
 	 */
 	@Override
-	public Amenities remove(int amenitiesId) throws NoSuchAmenitiesException {
+	public Amenities remove(long amenitiesId) throws NoSuchAmenitiesException {
 		return remove((Serializable)amenitiesId);
 	}
 
@@ -287,6 +2818,24 @@ public class AmenitiesPersistenceImpl
 	public Amenities updateImpl(Amenities amenities) {
 		boolean isNew = amenities.isNew();
 
+		if (!(amenities instanceof AmenitiesModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(amenities.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(amenities);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in amenities proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom Amenities implementation " +
+					amenities.getClass());
+		}
+
+		AmenitiesModelImpl amenitiesModelImpl = (AmenitiesModelImpl)amenities;
+
 		Session session = null;
 
 		try {
@@ -306,7 +2855,8 @@ public class AmenitiesPersistenceImpl
 			closeSession(session);
 		}
 
-		entityCache.putResult(AmenitiesImpl.class, amenities, false, true);
+		entityCache.putResult(
+			AmenitiesImpl.class, amenitiesModelImpl, false, true);
 
 		if (isNew) {
 			amenities.setNew(false);
@@ -350,7 +2900,7 @@ public class AmenitiesPersistenceImpl
 	 * @throws NoSuchAmenitiesException if a amenities with the primary key could not be found
 	 */
 	@Override
-	public Amenities findByPrimaryKey(int amenitiesId)
+	public Amenities findByPrimaryKey(long amenitiesId)
 		throws NoSuchAmenitiesException {
 
 		return findByPrimaryKey((Serializable)amenitiesId);
@@ -363,7 +2913,7 @@ public class AmenitiesPersistenceImpl
 	 * @return the amenities, or <code>null</code> if a amenities with the primary key could not be found
 	 */
 	@Override
-	public Amenities fetchByPrimaryKey(int amenitiesId) {
+	public Amenities fetchByPrimaryKey(long amenitiesId) {
 		return fetchByPrimaryKey((Serializable)amenitiesId);
 	}
 
@@ -593,6 +3143,98 @@ public class AmenitiesPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		_finderPathWithPaginationFindByIsACAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByIsACAvailable",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"isACAvailable"}, true);
+
+		_finderPathWithoutPaginationFindByIsACAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByIsACAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isACAvailable"}, true);
+
+		_finderPathCountByIsACAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByIsACAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isACAvailable"}, false);
+
+		_finderPathWithPaginationFindByIsSmokingAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByIsSmokingAvailable",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"isSmokingAvailable"}, true);
+
+		_finderPathWithoutPaginationFindByIsSmokingAvailable =
+			_createFinderPath(
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+				"findByIsSmokingAvailable",
+				new String[] {Boolean.class.getName()},
+				new String[] {"isSmokingAvailable"}, true);
+
+		_finderPathCountByIsSmokingAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByIsSmokingAvailable", new String[] {Boolean.class.getName()},
+			new String[] {"isSmokingAvailable"}, false);
+
+		_finderPathWithPaginationFindByIsWifiAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByIsWifiAvailable",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"isWifiAvailable"}, true);
+
+		_finderPathWithoutPaginationFindByIsWifiAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByIsWifiAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isWifiAvailable"}, true);
+
+		_finderPathCountByIsWifiAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByIsWifiAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isWifiAvailable"}, false);
+
+		_finderPathWithPaginationFindByIsTVAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByIsTVAvailable",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"isTVAvailable"}, true);
+
+		_finderPathWithoutPaginationFindByIsTVAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByIsTVAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isTVAvailable"}, true);
+
+		_finderPathCountByIsTVAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByIsTVAvailable",
+			new String[] {Boolean.class.getName()},
+			new String[] {"isTVAvailable"}, false);
+
+		_finderPathWithPaginationFindByIsGeyserAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByIsGeyserAvailable",
+			new String[] {
+				Boolean.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"isGeyserAvailable"}, true);
+
+		_finderPathWithoutPaginationFindByIsGeyserAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByIsGeyserAvailable", new String[] {Boolean.class.getName()},
+			new String[] {"isGeyserAvailable"}, true);
+
+		_finderPathCountByIsGeyserAvailable = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByIsGeyserAvailable", new String[] {Boolean.class.getName()},
+			new String[] {"isGeyserAvailable"}, false);
+
 		_setAmenitiesUtilPersistence(this);
 	}
 
@@ -663,13 +3305,22 @@ public class AmenitiesPersistenceImpl
 	private static final String _SQL_SELECT_AMENITIES =
 		"SELECT amenities FROM Amenities amenities";
 
+	private static final String _SQL_SELECT_AMENITIES_WHERE =
+		"SELECT amenities FROM Amenities amenities WHERE ";
+
 	private static final String _SQL_COUNT_AMENITIES =
 		"SELECT COUNT(amenities) FROM Amenities amenities";
+
+	private static final String _SQL_COUNT_AMENITIES_WHERE =
+		"SELECT COUNT(amenities) FROM Amenities amenities WHERE ";
 
 	private static final String _ORDER_BY_ENTITY_ALIAS = "amenities.";
 
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
 		"No Amenities exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No Amenities exists with the key {";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AmenitiesPersistenceImpl.class);

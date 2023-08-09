@@ -36,17 +36,17 @@ public interface Customer extends CustomerModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>ROOMSERVICES.model.impl.CustomerImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Customer, Integer> CUSTOMER_ID_ACCESSOR =
-		new Accessor<Customer, Integer>() {
+	public static final Accessor<Customer, Long> CUSTOMER_ID_ACCESSOR =
+		new Accessor<Customer, Long>() {
 
 			@Override
-			public Integer get(Customer customer) {
+			public Long get(Customer customer) {
 				return customer.getCustomerId();
 			}
 
 			@Override
-			public Class<Integer> getAttributeClass() {
-				return Integer.class;
+			public Class<Long> getAttributeClass() {
+				return Long.class;
 			}
 
 			@Override

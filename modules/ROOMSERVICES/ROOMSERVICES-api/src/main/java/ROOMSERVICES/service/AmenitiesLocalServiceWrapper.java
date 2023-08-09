@@ -56,7 +56,7 @@ public class AmenitiesLocalServiceWrapper
 	 * @return the new amenities
 	 */
 	@Override
-	public ROOMSERVICES.model.Amenities createAmenities(int amenitiesId) {
+	public ROOMSERVICES.model.Amenities createAmenities(long amenitiesId) {
 		return _amenitiesLocalService.createAmenities(amenitiesId);
 	}
 
@@ -100,7 +100,7 @@ public class AmenitiesLocalServiceWrapper
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Amenities deleteAmenities(int amenitiesId)
+	public ROOMSERVICES.model.Amenities deleteAmenities(long amenitiesId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _amenitiesLocalService.deleteAmenities(amenitiesId);
@@ -208,8 +208,15 @@ public class AmenitiesLocalServiceWrapper
 	}
 
 	@Override
-	public ROOMSERVICES.model.Amenities fetchAmenities(int amenitiesId) {
+	public ROOMSERVICES.model.Amenities fetchAmenities(long amenitiesId) {
 		return _amenitiesLocalService.fetchAmenities(amenitiesId);
+	}
+
+	@Override
+	public java.util.List<ROOMSERVICES.model.Amenities> findByIsACAvailable(
+		boolean isACAvailable) {
+
+		return _amenitiesLocalService.findByIsACAvailable(isACAvailable);
 	}
 
 	@Override
@@ -227,7 +234,7 @@ public class AmenitiesLocalServiceWrapper
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Amenities getAmenities(int amenitiesId)
+	public ROOMSERVICES.model.Amenities getAmenities(long amenitiesId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _amenitiesLocalService.getAmenities(amenitiesId);

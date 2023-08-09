@@ -82,7 +82,7 @@ public interface AmenitiesLocalService
 	 * @return the new amenities
 	 */
 	@Transactional(enabled = false)
-	public Amenities createAmenities(int amenitiesId);
+	public Amenities createAmenities(long amenitiesId);
 
 	/**
 	 * @throws PortalException
@@ -115,7 +115,7 @@ public interface AmenitiesLocalService
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public Amenities deleteAmenities(int amenitiesId) throws PortalException;
+	public Amenities deleteAmenities(long amenitiesId) throws PortalException;
 
 	/**
 	 * @throws PortalException
@@ -191,7 +191,9 @@ public interface AmenitiesLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Amenities fetchAmenities(int amenitiesId);
+	public Amenities fetchAmenities(long amenitiesId);
+
+	public List<Amenities> findByIsACAvailable(boolean isACAvailable);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -204,7 +206,7 @@ public interface AmenitiesLocalService
 	 * @throws PortalException if a amenities with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Amenities getAmenities(int amenitiesId) throws PortalException;
+	public Amenities getAmenities(long amenitiesId) throws PortalException;
 
 	/**
 	 * Returns a range of all the amenitieses.

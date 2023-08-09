@@ -36,17 +36,17 @@ public interface Amenities extends AmenitiesModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>ROOMSERVICES.model.impl.AmenitiesImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Amenities, Integer> AMENITIES_ID_ACCESSOR =
-		new Accessor<Amenities, Integer>() {
+	public static final Accessor<Amenities, Long> AMENITIES_ID_ACCESSOR =
+		new Accessor<Amenities, Long>() {
 
 			@Override
-			public Integer get(Amenities amenities) {
+			public Long get(Amenities amenities) {
 				return amenities.getAmenitiesId();
 			}
 
 			@Override
-			public Class<Integer> getAttributeClass() {
-				return Integer.class;
+			public Class<Long> getAttributeClass() {
+				return Long.class;
 			}
 
 			@Override

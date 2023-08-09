@@ -53,7 +53,7 @@ public class AmenitiesWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Integer amenitiesId = (Integer)attributes.get("amenitiesId");
+		Long amenitiesId = (Long)attributes.get("amenitiesId");
 
 		if (amenitiesId != null) {
 			setAmenitiesId(amenitiesId);
@@ -98,7 +98,7 @@ public class AmenitiesWrapper
 	 * @return the amenities ID of this amenities
 	 */
 	@Override
-	public int getAmenitiesId() {
+	public long getAmenitiesId() {
 		return model.getAmenitiesId();
 	}
 
@@ -158,7 +158,7 @@ public class AmenitiesWrapper
 	 * @return the primary key of this amenities
 	 */
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return model.getPrimaryKey();
 	}
 
@@ -173,7 +173,7 @@ public class AmenitiesWrapper
 	 * @param amenitiesId the amenities ID of this amenities
 	 */
 	@Override
-	public void setAmenitiesId(int amenitiesId) {
+	public void setAmenitiesId(long amenitiesId) {
 		model.setAmenitiesId(amenitiesId);
 	}
 
@@ -233,7 +233,7 @@ public class AmenitiesWrapper
 	 * @param primaryKey the primary key of this amenities
 	 */
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
 	}
 

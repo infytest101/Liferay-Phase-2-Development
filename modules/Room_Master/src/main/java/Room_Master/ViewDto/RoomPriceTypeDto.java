@@ -1,7 +1,7 @@
-package room.rest.api.application.ViewDto;
+package Room_Master.ViewDto;
 public class RoomPriceTypeDto {
 	private int price;
-	private int id;
+	private long id;
 	private  String  roomtypedata;
 	private boolean isACAvailable;
 	private boolean isSmokingAvailable;
@@ -117,10 +117,10 @@ public class RoomPriceTypeDto {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 }

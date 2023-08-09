@@ -14,8 +14,6 @@
 
 package ROOMSERVICES.model;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -81,20 +79,19 @@ public class RoomTypeSoap implements Serializable {
 	public RoomTypeSoap() {
 	}
 
-	public RoomTypePK getPrimaryKey() {
-		return new RoomTypePK(_roomTypeId, _RoomType);
-	}
-
-	public void setPrimaryKey(RoomTypePK pk) {
-		setRoomTypeId(pk.roomTypeId);
-		setRoomType(pk.RoomType);
-	}
-
-	public int getRoomTypeId() {
+	public long getPrimaryKey() {
 		return _roomTypeId;
 	}
 
-	public void setRoomTypeId(int roomTypeId) {
+	public void setPrimaryKey(long pk) {
+		setRoomTypeId(pk);
+	}
+
+	public long getRoomTypeId() {
+		return _roomTypeId;
+	}
+
+	public void setRoomTypeId(long roomTypeId) {
 		_roomTypeId = roomTypeId;
 	}
 
@@ -106,7 +103,7 @@ public class RoomTypeSoap implements Serializable {
 		_RoomType = RoomType;
 	}
 
-	private int _roomTypeId;
+	private long _roomTypeId;
 	private String _RoomType;
 
 }

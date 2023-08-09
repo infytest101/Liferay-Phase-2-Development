@@ -126,8 +126,8 @@ public class RoomTypeUtil {
 	 * @param RoomType the room type
 	 * @return the matching room types
 	 */
-	public static List<RoomType> findByRoomType_RoomType(String RoomType) {
-		return getPersistence().findByRoomType_RoomType(RoomType);
+	public static List<RoomType> findByRoomType(String RoomType) {
+		return getPersistence().findByRoomType(RoomType);
 	}
 
 	/**
@@ -142,10 +142,10 @@ public class RoomTypeUtil {
 	 * @param end the upper bound of the range of room types (not inclusive)
 	 * @return the range of matching room types
 	 */
-	public static List<RoomType> findByRoomType_RoomType(
+	public static List<RoomType> findByRoomType(
 		String RoomType, int start, int end) {
 
-		return getPersistence().findByRoomType_RoomType(RoomType, start, end);
+		return getPersistence().findByRoomType(RoomType, start, end);
 	}
 
 	/**
@@ -161,11 +161,11 @@ public class RoomTypeUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching room types
 	 */
-	public static List<RoomType> findByRoomType_RoomType(
+	public static List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		OrderByComparator<RoomType> orderByComparator) {
 
-		return getPersistence().findByRoomType_RoomType(
+		return getPersistence().findByRoomType(
 			RoomType, start, end, orderByComparator);
 	}
 
@@ -183,11 +183,11 @@ public class RoomTypeUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching room types
 	 */
-	public static List<RoomType> findByRoomType_RoomType(
+	public static List<RoomType> findByRoomType(
 		String RoomType, int start, int end,
 		OrderByComparator<RoomType> orderByComparator, boolean useFinderCache) {
 
-		return getPersistence().findByRoomType_RoomType(
+		return getPersistence().findByRoomType(
 			RoomType, start, end, orderByComparator, useFinderCache);
 	}
 
@@ -199,11 +199,11 @@ public class RoomTypeUtil {
 	 * @return the first matching room type
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
-	public static RoomType findByRoomType_RoomType_First(
+	public static RoomType findByRoomType_First(
 			String RoomType, OrderByComparator<RoomType> orderByComparator)
 		throws ROOMSERVICES.exception.NoSuchRoomTypeException {
 
-		return getPersistence().findByRoomType_RoomType_First(
+		return getPersistence().findByRoomType_First(
 			RoomType, orderByComparator);
 	}
 
@@ -214,10 +214,10 @@ public class RoomTypeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching room type, or <code>null</code> if a matching room type could not be found
 	 */
-	public static RoomType fetchByRoomType_RoomType_First(
+	public static RoomType fetchByRoomType_First(
 		String RoomType, OrderByComparator<RoomType> orderByComparator) {
 
-		return getPersistence().fetchByRoomType_RoomType_First(
+		return getPersistence().fetchByRoomType_First(
 			RoomType, orderByComparator);
 	}
 
@@ -229,11 +229,11 @@ public class RoomTypeUtil {
 	 * @return the last matching room type
 	 * @throws NoSuchRoomTypeException if a matching room type could not be found
 	 */
-	public static RoomType findByRoomType_RoomType_Last(
+	public static RoomType findByRoomType_Last(
 			String RoomType, OrderByComparator<RoomType> orderByComparator)
 		throws ROOMSERVICES.exception.NoSuchRoomTypeException {
 
-		return getPersistence().findByRoomType_RoomType_Last(
+		return getPersistence().findByRoomType_Last(
 			RoomType, orderByComparator);
 	}
 
@@ -244,29 +244,29 @@ public class RoomTypeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching room type, or <code>null</code> if a matching room type could not be found
 	 */
-	public static RoomType fetchByRoomType_RoomType_Last(
+	public static RoomType fetchByRoomType_Last(
 		String RoomType, OrderByComparator<RoomType> orderByComparator) {
 
-		return getPersistence().fetchByRoomType_RoomType_Last(
+		return getPersistence().fetchByRoomType_Last(
 			RoomType, orderByComparator);
 	}
 
 	/**
 	 * Returns the room types before and after the current room type in the ordered set where RoomType = &#63;.
 	 *
-	 * @param roomTypePK the primary key of the current room type
+	 * @param roomTypeId the primary key of the current room type
 	 * @param RoomType the room type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public static RoomType[] findByRoomType_RoomType_PrevAndNext(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK,
-			String RoomType, OrderByComparator<RoomType> orderByComparator)
+	public static RoomType[] findByRoomType_PrevAndNext(
+			long roomTypeId, String RoomType,
+			OrderByComparator<RoomType> orderByComparator)
 		throws ROOMSERVICES.exception.NoSuchRoomTypeException {
 
-		return getPersistence().findByRoomType_RoomType_PrevAndNext(
-			roomTypePK, RoomType, orderByComparator);
+		return getPersistence().findByRoomType_PrevAndNext(
+			roomTypeId, RoomType, orderByComparator);
 	}
 
 	/**
@@ -274,8 +274,8 @@ public class RoomTypeUtil {
 	 *
 	 * @param RoomType the room type
 	 */
-	public static void removeByRoomType_RoomType(String RoomType) {
-		getPersistence().removeByRoomType_RoomType(RoomType);
+	public static void removeByRoomType(String RoomType) {
+		getPersistence().removeByRoomType(RoomType);
 	}
 
 	/**
@@ -284,8 +284,8 @@ public class RoomTypeUtil {
 	 * @param RoomType the room type
 	 * @return the number of matching room types
 	 */
-	public static int countByRoomType_RoomType(String RoomType) {
-		return getPersistence().countByRoomType_RoomType(RoomType);
+	public static int countByRoomType(String RoomType) {
+		return getPersistence().countByRoomType(RoomType);
 	}
 
 	/**
@@ -309,27 +309,24 @@ public class RoomTypeUtil {
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
-	public static RoomType create(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK) {
-
-		return getPersistence().create(roomTypePK);
+	public static RoomType create(long roomTypeId) {
+		return getPersistence().create(roomTypeId);
 	}
 
 	/**
 	 * Removes the room type with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type that was removed
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public static RoomType remove(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
+	public static RoomType remove(long roomTypeId)
 		throws ROOMSERVICES.exception.NoSuchRoomTypeException {
 
-		return getPersistence().remove(roomTypePK);
+		return getPersistence().remove(roomTypeId);
 	}
 
 	public static RoomType updateImpl(RoomType roomType) {
@@ -339,27 +336,24 @@ public class RoomTypeUtil {
 	/**
 	 * Returns the room type with the primary key or throws a <code>NoSuchRoomTypeException</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws NoSuchRoomTypeException if a room type with the primary key could not be found
 	 */
-	public static RoomType findByPrimaryKey(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
+	public static RoomType findByPrimaryKey(long roomTypeId)
 		throws ROOMSERVICES.exception.NoSuchRoomTypeException {
 
-		return getPersistence().findByPrimaryKey(roomTypePK);
+		return getPersistence().findByPrimaryKey(roomTypeId);
 	}
 
 	/**
 	 * Returns the room type with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type, or <code>null</code> if a room type with the primary key could not be found
 	 */
-	public static RoomType fetchByPrimaryKey(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK) {
-
-		return getPersistence().fetchByPrimaryKey(roomTypePK);
+	public static RoomType fetchByPrimaryKey(long roomTypeId) {
+		return getPersistence().fetchByPrimaryKey(roomTypeId);
 	}
 
 	/**
@@ -439,10 +433,6 @@ public class RoomTypeUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
-	}
-
-	public static Set<String> getCompoundPKColumnNames() {
-		return getPersistence().getCompoundPKColumnNames();
 	}
 
 	public static RoomTypePersistence getPersistence() {

@@ -16,8 +16,6 @@ package ROOMSERVICES.model.impl;
 
 import ROOMSERVICES.model.RoomType;
 
-import ROOMSERVICES.service.persistence.RoomTypePK;
-
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -48,7 +46,7 @@ public class RoomTypeCacheModel
 
 		RoomTypeCacheModel roomTypeCacheModel = (RoomTypeCacheModel)object;
 
-		if (roomTypePK.equals(roomTypeCacheModel.roomTypePK)) {
+		if (roomTypeId == roomTypeCacheModel.roomTypeId) {
 			return true;
 		}
 
@@ -57,7 +55,7 @@ public class RoomTypeCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, roomTypePK);
+		return HashUtil.hash(0, roomTypeId);
 	}
 
 	@Override
@@ -93,15 +91,13 @@ public class RoomTypeCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		roomTypeId = objectInput.readInt();
+		roomTypeId = objectInput.readLong();
 		RoomType = objectInput.readUTF();
-
-		roomTypePK = new RoomTypePK(roomTypeId, RoomType);
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeInt(roomTypeId);
+		objectOutput.writeLong(roomTypeId);
 
 		if (RoomType == null) {
 			objectOutput.writeUTF("");
@@ -111,8 +107,7 @@ public class RoomTypeCacheModel
 		}
 	}
 
-	public int roomTypeId;
+	public long roomTypeId;
 	public String RoomType;
-	public transient RoomTypePK roomTypePK;
 
 }

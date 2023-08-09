@@ -99,7 +99,7 @@ public class CustomerPersistenceImpl
 		setModelClass(Customer.class);
 
 		setModelImplClass(CustomerImpl.class);
-		setModelPKClass(int.class);
+		setModelPKClass(long.class);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class CustomerPersistenceImpl
 	 * @return the new customer
 	 */
 	@Override
-	public Customer create(int customerId) {
+	public Customer create(long customerId) {
 		Customer customer = new CustomerImpl();
 
 		customer.setNew(true);
@@ -208,7 +208,7 @@ public class CustomerPersistenceImpl
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
 	@Override
-	public Customer remove(int customerId) throws NoSuchCustomerException {
+	public Customer remove(long customerId) throws NoSuchCustomerException {
 		return remove((Serializable)customerId);
 	}
 
@@ -350,7 +350,7 @@ public class CustomerPersistenceImpl
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
 	@Override
-	public Customer findByPrimaryKey(int customerId)
+	public Customer findByPrimaryKey(long customerId)
 		throws NoSuchCustomerException {
 
 		return findByPrimaryKey((Serializable)customerId);
@@ -363,7 +363,7 @@ public class CustomerPersistenceImpl
 	 * @return the customer, or <code>null</code> if a customer with the primary key could not be found
 	 */
 	@Override
-	public Customer fetchByPrimaryKey(int customerId) {
+	public Customer fetchByPrimaryKey(long customerId) {
 		return fetchByPrimaryKey((Serializable)customerId);
 	}
 

@@ -30,11 +30,6 @@ public class RoomsLocalServiceWrapper
 		_roomsLocalService = roomsLocalService;
 	}
 
-	@Override
-	public String addRoomDetails(String amenitiesjsonData, String formData) {
-		return _roomsLocalService.addRoomDetails(amenitiesjsonData, formData);
-	}
-
 	/**
 	 * Adds the rooms to the database. Also notifies the appropriate model listeners.
 	 *
@@ -68,7 +63,7 @@ public class RoomsLocalServiceWrapper
 	 * @return the new rooms
 	 */
 	@Override
-	public ROOMSERVICES.model.Rooms createRooms(int roomId) {
+	public ROOMSERVICES.model.Rooms createRooms(long roomId) {
 		return _roomsLocalService.createRooms(roomId);
 	}
 
@@ -95,7 +90,7 @@ public class RoomsLocalServiceWrapper
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Rooms deleteRooms(int roomId)
+	public ROOMSERVICES.model.Rooms deleteRooms(long roomId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _roomsLocalService.deleteRooms(roomId);
@@ -208,8 +203,15 @@ public class RoomsLocalServiceWrapper
 	}
 
 	@Override
-	public ROOMSERVICES.model.Rooms fetchRooms(int roomId) {
+	public ROOMSERVICES.model.Rooms fetchRooms(long roomId) {
 		return _roomsLocalService.fetchRooms(roomId);
+	}
+
+	@Override
+	public ROOMSERVICES.model.Rooms findByRoomName(String roomName)
+		throws ROOMSERVICES.exception.NoSuchRoomsException {
+
+		return _roomsLocalService.findByRoomName(roomName);
 	}
 
 	@Override
@@ -255,7 +257,7 @@ public class RoomsLocalServiceWrapper
 	 * @throws PortalException if a rooms with the primary key could not be found
 	 */
 	@Override
-	public ROOMSERVICES.model.Rooms getRooms(int roomId)
+	public ROOMSERVICES.model.Rooms getRooms(long roomId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _roomsLocalService.getRooms(roomId);

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -46,16 +47,19 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -99,12 +103,247 @@ public class RoomsPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByRoomName;
+	private FinderPath _finderPathCountByRoomName;
+
+	/**
+	 * Returns the rooms where roomName = &#63; or throws a <code>NoSuchRoomsException</code> if it could not be found.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms
+	 * @throws NoSuchRoomsException if a matching rooms could not be found
+	 */
+	@Override
+	public Rooms findByRoomName(String roomName) throws NoSuchRoomsException {
+		Rooms rooms = fetchByRoomName(roomName);
+
+		if (rooms == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("roomName=");
+			sb.append(roomName);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchRoomsException(sb.toString());
+		}
+
+		return rooms;
+	}
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	@Override
+	public Rooms fetchByRoomName(String roomName) {
+		return fetchByRoomName(roomName, true);
+	}
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	@Override
+	public Rooms fetchByRoomName(String roomName, boolean useFinderCache) {
+		roomName = Objects.toString(roomName, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {roomName};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByRoomName, finderArgs, this);
+		}
+
+		if (result instanceof Rooms) {
+			Rooms rooms = (Rooms)result;
+
+			if (!Objects.equals(roomName, rooms.getRoomName())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_SELECT_ROOMS_WHERE);
+
+			boolean bindRoomName = false;
+
+			if (roomName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_ROOMNAME_ROOMNAME_3);
+			}
+			else {
+				bindRoomName = true;
+
+				sb.append(_FINDER_COLUMN_ROOMNAME_ROOMNAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindRoomName) {
+					queryPos.add(roomName);
+				}
+
+				List<Rooms> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByRoomName, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {roomName};
+							}
+
+							_log.warn(
+								"RoomsPersistenceImpl.fetchByRoomName(String, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					Rooms rooms = list.get(0);
+
+					result = rooms;
+
+					cacheResult(rooms);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Rooms)result;
+		}
+	}
+
+	/**
+	 * Removes the rooms where roomName = &#63; from the database.
+	 *
+	 * @param roomName the room name
+	 * @return the rooms that was removed
+	 */
+	@Override
+	public Rooms removeByRoomName(String roomName) throws NoSuchRoomsException {
+		Rooms rooms = findByRoomName(roomName);
+
+		return remove(rooms);
+	}
+
+	/**
+	 * Returns the number of roomses where roomName = &#63;.
+	 *
+	 * @param roomName the room name
+	 * @return the number of matching roomses
+	 */
+	@Override
+	public int countByRoomName(String roomName) {
+		roomName = Objects.toString(roomName, "");
+
+		FinderPath finderPath = _finderPathCountByRoomName;
+
+		Object[] finderArgs = new Object[] {roomName};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_ROOMS_WHERE);
+
+			boolean bindRoomName = false;
+
+			if (roomName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_ROOMNAME_ROOMNAME_3);
+			}
+			else {
+				bindRoomName = true;
+
+				sb.append(_FINDER_COLUMN_ROOMNAME_ROOMNAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindRoomName) {
+					queryPos.add(roomName);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ROOMNAME_ROOMNAME_2 =
+		"rooms.roomName = ?";
+
+	private static final String _FINDER_COLUMN_ROOMNAME_ROOMNAME_3 =
+		"(rooms.roomName IS NULL OR rooms.roomName = '')";
 
 	public RoomsPersistenceImpl() {
 		setModelClass(Rooms.class);
 
 		setModelImplClass(RoomsImpl.class);
-		setModelPKClass(int.class);
+		setModelPKClass(long.class);
 	}
 
 	/**
@@ -115,6 +354,10 @@ public class RoomsPersistenceImpl
 	@Override
 	public void cacheResult(Rooms rooms) {
 		entityCache.putResult(RoomsImpl.class, rooms.getPrimaryKey(), rooms);
+
+		finderCache.putResult(
+			_finderPathFetchByRoomName, new Object[] {rooms.getRoomName()},
+			rooms);
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -188,6 +431,15 @@ public class RoomsPersistenceImpl
 		}
 	}
 
+	protected void cacheUniqueFindersCache(RoomsModelImpl roomsModelImpl) {
+		Object[] args = new Object[] {roomsModelImpl.getRoomName()};
+
+		finderCache.putResult(
+			_finderPathCountByRoomName, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByRoomName, args, roomsModelImpl, false);
+	}
+
 	/**
 	 * Creates a new rooms with the primary key. Does not add the rooms to the database.
 	 *
@@ -195,7 +447,7 @@ public class RoomsPersistenceImpl
 	 * @return the new rooms
 	 */
 	@Override
-	public Rooms create(int roomId) {
+	public Rooms create(long roomId) {
 		Rooms rooms = new RoomsImpl();
 
 		rooms.setNew(true);
@@ -212,7 +464,7 @@ public class RoomsPersistenceImpl
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
 	@Override
-	public Rooms remove(int roomId) throws NoSuchRoomsException {
+	public Rooms remove(long roomId) throws NoSuchRoomsException {
 		return remove((Serializable)roomId);
 	}
 
@@ -339,7 +591,9 @@ public class RoomsPersistenceImpl
 			closeSession(session);
 		}
 
-		entityCache.putResult(RoomsImpl.class, rooms, false, true);
+		entityCache.putResult(RoomsImpl.class, roomsModelImpl, false, true);
+
+		cacheUniqueFindersCache(roomsModelImpl);
 
 		if (isNew) {
 			rooms.setNew(false);
@@ -383,7 +637,7 @@ public class RoomsPersistenceImpl
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
 	@Override
-	public Rooms findByPrimaryKey(int roomId) throws NoSuchRoomsException {
+	public Rooms findByPrimaryKey(long roomId) throws NoSuchRoomsException {
 		return findByPrimaryKey((Serializable)roomId);
 	}
 
@@ -394,7 +648,7 @@ public class RoomsPersistenceImpl
 	 * @return the rooms, or <code>null</code> if a rooms with the primary key could not be found
 	 */
 	@Override
-	public Rooms fetchByPrimaryKey(int roomId) {
+	public Rooms fetchByPrimaryKey(long roomId) {
 		return fetchByPrimaryKey((Serializable)roomId);
 	}
 
@@ -624,6 +878,16 @@ public class RoomsPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		_finderPathFetchByRoomName = _createFinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByRoomName",
+			new String[] {String.class.getName()}, new String[] {"roomName"},
+			true);
+
+		_finderPathCountByRoomName = _createFinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRoomName",
+			new String[] {String.class.getName()}, new String[] {"roomName"},
+			false);
+
 		_setRoomsUtilPersistence(this);
 	}
 
@@ -692,13 +956,22 @@ public class RoomsPersistenceImpl
 	private static final String _SQL_SELECT_ROOMS =
 		"SELECT rooms FROM Rooms rooms";
 
+	private static final String _SQL_SELECT_ROOMS_WHERE =
+		"SELECT rooms FROM Rooms rooms WHERE ";
+
 	private static final String _SQL_COUNT_ROOMS =
 		"SELECT COUNT(rooms) FROM Rooms rooms";
+
+	private static final String _SQL_COUNT_ROOMS_WHERE =
+		"SELECT COUNT(rooms) FROM Rooms rooms WHERE ";
 
 	private static final String _ORDER_BY_ENTITY_ALIAS = "rooms.";
 
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
 		"No Rooms exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No Rooms exists with the key {";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RoomsPersistenceImpl.class);

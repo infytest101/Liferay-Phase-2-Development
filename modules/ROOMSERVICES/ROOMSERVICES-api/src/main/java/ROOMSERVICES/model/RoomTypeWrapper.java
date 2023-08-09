@@ -49,7 +49,7 @@ public class RoomTypeWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Integer roomTypeId = (Integer)attributes.get("roomTypeId");
+		Long roomTypeId = (Long)attributes.get("roomTypeId");
 
 		if (roomTypeId != null) {
 			setRoomTypeId(roomTypeId);
@@ -68,7 +68,7 @@ public class RoomTypeWrapper
 	 * @return the primary key of this room type
 	 */
 	@Override
-	public ROOMSERVICES.service.persistence.RoomTypePK getPrimaryKey() {
+	public long getPrimaryKey() {
 		return model.getPrimaryKey();
 	}
 
@@ -88,7 +88,7 @@ public class RoomTypeWrapper
 	 * @return the room type ID of this room type
 	 */
 	@Override
-	public int getRoomTypeId() {
+	public long getRoomTypeId() {
 		return model.getRoomTypeId();
 	}
 
@@ -103,9 +103,7 @@ public class RoomTypeWrapper
 	 * @param primaryKey the primary key of this room type
 	 */
 	@Override
-	public void setPrimaryKey(
-		ROOMSERVICES.service.persistence.RoomTypePK primaryKey) {
-
+	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
 	}
 
@@ -125,7 +123,7 @@ public class RoomTypeWrapper
 	 * @param roomTypeId the room type ID of this room type
 	 */
 	@Override
-	public void setRoomTypeId(int roomTypeId) {
+	public void setRoomTypeId(long roomTypeId) {
 		model.setRoomTypeId(roomTypeId);
 	}
 

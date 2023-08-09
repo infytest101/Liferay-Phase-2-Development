@@ -8,7 +8,7 @@
 	<import class="ROOMSERVICES.model.Rooms" />
 	<import class="ROOMSERVICES.model.RoomType" />
 	<class name="ROOMSERVICES.model.impl.AmenitiesImpl" table="Infy_Amenities">
-		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="amenitiesId" type="int">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="amenitiesId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="isACAvailable" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -32,7 +32,7 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="bookingEndDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="ROOMSERVICES.model.impl.CustomerImpl" table="Infy_Customer">
-		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="customerId" type="int">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="customerId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="firstName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -44,12 +44,13 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="ROOMSERVICES.model.impl.RoomsImpl" table="Infy_Rooms">
-		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomId" type="int">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomTypeId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="amenitiesId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="price" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="totalRoomsAvailable" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="createDate" type="org.hibernate.type.TimestampType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="createBy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -57,9 +58,9 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="updatedBy" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="ROOMSERVICES.model.impl.RoomTypeImpl" table="Infy_RoomType">
-		<composite-id class="ROOMSERVICES.service.persistence.RoomTypePK" name="primaryKey">
-			<key-property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomTypeId" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-			<key-property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="RoomType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		</composite-id>
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="roomTypeId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="RoomType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

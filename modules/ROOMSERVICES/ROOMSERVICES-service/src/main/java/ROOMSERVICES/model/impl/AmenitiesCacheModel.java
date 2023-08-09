@@ -97,7 +97,7 @@ public class AmenitiesCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		amenitiesId = objectInput.readInt();
+		amenitiesId = objectInput.readLong();
 
 		isACAvailable = objectInput.readBoolean();
 
@@ -112,7 +112,7 @@ public class AmenitiesCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeInt(amenitiesId);
+		objectOutput.writeLong(amenitiesId);
 
 		objectOutput.writeBoolean(isACAvailable);
 
@@ -125,7 +125,7 @@ public class AmenitiesCacheModel
 		objectOutput.writeBoolean(isGeyserAvailable);
 	}
 
-	public int amenitiesId;
+	public long amenitiesId;
 	public boolean isACAvailable;
 	public boolean isSmokingAvailable;
 	public boolean isWifiAvailable;

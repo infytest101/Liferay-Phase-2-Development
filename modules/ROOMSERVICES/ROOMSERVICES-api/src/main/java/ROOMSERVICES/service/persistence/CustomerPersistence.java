@@ -62,7 +62,7 @@ public interface CustomerPersistence extends BasePersistence<Customer> {
 	 * @param customerId the primary key for the new customer
 	 * @return the new customer
 	 */
-	public Customer create(int customerId);
+	public Customer create(long customerId);
 
 	/**
 	 * Removes the customer with the primary key from the database. Also notifies the appropriate model listeners.
@@ -71,7 +71,7 @@ public interface CustomerPersistence extends BasePersistence<Customer> {
 	 * @return the customer that was removed
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
-	public Customer remove(int customerId) throws NoSuchCustomerException;
+	public Customer remove(long customerId) throws NoSuchCustomerException;
 
 	public Customer updateImpl(Customer customer);
 
@@ -82,7 +82,7 @@ public interface CustomerPersistence extends BasePersistence<Customer> {
 	 * @return the customer
 	 * @throws NoSuchCustomerException if a customer with the primary key could not be found
 	 */
-	public Customer findByPrimaryKey(int customerId)
+	public Customer findByPrimaryKey(long customerId)
 		throws NoSuchCustomerException;
 
 	/**
@@ -91,7 +91,7 @@ public interface CustomerPersistence extends BasePersistence<Customer> {
 	 * @param customerId the primary key of the customer
 	 * @return the customer, or <code>null</code> if a customer with the primary key could not be found
 	 */
-	public Customer fetchByPrimaryKey(int customerId);
+	public Customer fetchByPrimaryKey(long customerId);
 
 	/**
 	 * Returns all the customers.

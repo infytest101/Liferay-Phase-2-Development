@@ -43,6 +43,48 @@ public interface RoomsPersistence extends BasePersistence<Rooms> {
 	 */
 
 	/**
+	 * Returns the rooms where roomName = &#63; or throws a <code>NoSuchRoomsException</code> if it could not be found.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms
+	 * @throws NoSuchRoomsException if a matching rooms could not be found
+	 */
+	public Rooms findByRoomName(String roomName) throws NoSuchRoomsException;
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	public Rooms fetchByRoomName(String roomName);
+
+	/**
+	 * Returns the rooms where roomName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param roomName the room name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching rooms, or <code>null</code> if a matching rooms could not be found
+	 */
+	public Rooms fetchByRoomName(String roomName, boolean useFinderCache);
+
+	/**
+	 * Removes the rooms where roomName = &#63; from the database.
+	 *
+	 * @param roomName the room name
+	 * @return the rooms that was removed
+	 */
+	public Rooms removeByRoomName(String roomName) throws NoSuchRoomsException;
+
+	/**
+	 * Returns the number of roomses where roomName = &#63;.
+	 *
+	 * @param roomName the room name
+	 * @return the number of matching roomses
+	 */
+	public int countByRoomName(String roomName);
+
+	/**
 	 * Caches the rooms in the entity cache if it is enabled.
 	 *
 	 * @param rooms the rooms
@@ -62,7 +104,7 @@ public interface RoomsPersistence extends BasePersistence<Rooms> {
 	 * @param roomId the primary key for the new rooms
 	 * @return the new rooms
 	 */
-	public Rooms create(int roomId);
+	public Rooms create(long roomId);
 
 	/**
 	 * Removes the rooms with the primary key from the database. Also notifies the appropriate model listeners.
@@ -71,7 +113,7 @@ public interface RoomsPersistence extends BasePersistence<Rooms> {
 	 * @return the rooms that was removed
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
-	public Rooms remove(int roomId) throws NoSuchRoomsException;
+	public Rooms remove(long roomId) throws NoSuchRoomsException;
 
 	public Rooms updateImpl(Rooms rooms);
 
@@ -82,7 +124,7 @@ public interface RoomsPersistence extends BasePersistence<Rooms> {
 	 * @return the rooms
 	 * @throws NoSuchRoomsException if a rooms with the primary key could not be found
 	 */
-	public Rooms findByPrimaryKey(int roomId) throws NoSuchRoomsException;
+	public Rooms findByPrimaryKey(long roomId) throws NoSuchRoomsException;
 
 	/**
 	 * Returns the rooms with the primary key or returns <code>null</code> if it could not be found.
@@ -90,7 +132,7 @@ public interface RoomsPersistence extends BasePersistence<Rooms> {
 	 * @param roomId the primary key of the rooms
 	 * @return the rooms, or <code>null</code> if a rooms with the primary key could not be found
 	 */
-	public Rooms fetchByPrimaryKey(int roomId);
+	public Rooms fetchByPrimaryKey(long roomId);
 
 	/**
 	 * Returns all the roomses.

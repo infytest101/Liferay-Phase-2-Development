@@ -82,7 +82,7 @@ public interface CustomerLocalService
 	 * @return the new customer
 	 */
 	@Transactional(enabled = false)
-	public Customer createCustomer(int customerId);
+	public Customer createCustomer(long customerId);
 
 	/**
 	 * @throws PortalException
@@ -115,7 +115,7 @@ public interface CustomerLocalService
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public Customer deleteCustomer(int customerId) throws PortalException;
+	public Customer deleteCustomer(long customerId) throws PortalException;
 
 	/**
 	 * @throws PortalException
@@ -191,7 +191,7 @@ public interface CustomerLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Customer fetchCustomer(int customerId);
+	public Customer fetchCustomer(long customerId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -204,7 +204,7 @@ public interface CustomerLocalService
 	 * @throws PortalException if a customer with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Customer getCustomer(int customerId) throws PortalException;
+	public Customer getCustomer(long customerId) throws PortalException;
 
 	/**
 	 * Returns a range of all the customers.

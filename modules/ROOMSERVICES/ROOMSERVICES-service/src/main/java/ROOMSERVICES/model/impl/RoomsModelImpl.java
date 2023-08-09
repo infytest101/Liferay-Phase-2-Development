@@ -17,11 +17,14 @@ package ROOMSERVICES.model.impl;
 import ROOMSERVICES.model.Rooms;
 import ROOMSERVICES.model.RoomsModel;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -63,21 +66,22 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	public static final String TABLE_NAME = "Infy_Rooms";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"roomId", Types.INTEGER}, {"roomTypeId", Types.INTEGER},
+		{"roomId", Types.BIGINT}, {"roomTypeId", Types.INTEGER},
 		{"amenitiesId", Types.INTEGER}, {"roomName", Types.VARCHAR},
-		{"totalRoomsAvailable", Types.INTEGER}, {"createDate", Types.TIMESTAMP},
-		{"createBy", Types.VARCHAR}, {"updateDate", Types.TIMESTAMP},
-		{"updatedBy", Types.VARCHAR}
+		{"price", Types.INTEGER}, {"totalRoomsAvailable", Types.INTEGER},
+		{"createDate", Types.TIMESTAMP}, {"createBy", Types.VARCHAR},
+		{"updateDate", Types.TIMESTAMP}, {"updatedBy", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("roomId", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("roomId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("roomTypeId", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("amenitiesId", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("roomName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("price", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("totalRoomsAvailable", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("createBy", Types.VARCHAR);
@@ -86,7 +90,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Infy_Rooms (roomId INTEGER not null primary key,roomTypeId INTEGER,amenitiesId INTEGER,roomName VARCHAR(75) null,totalRoomsAvailable INTEGER,createDate DATE null,createBy VARCHAR(75) null,updateDate DATE null,updatedBy VARCHAR(75) null)";
+		"create table Infy_Rooms (roomId LONG not null primary key,roomTypeId INTEGER,amenitiesId INTEGER,roomName VARCHAR(75) null,price INTEGER,totalRoomsAvailable INTEGER,createDate DATE null,createBy VARCHAR(75) null,updateDate DATE null,updatedBy VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table Infy_Rooms";
 
@@ -101,11 +105,17 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long ROOMNAME_COLUMN_BITMASK = 1L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long ROOMID_COLUMN_BITMASK = 1L;
+	public static final long ROOMID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -125,12 +135,12 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	}
 
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _roomId;
 	}
 
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		setRoomId(primaryKey);
 	}
 
@@ -141,7 +151,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Integer)primaryKeyObj).intValue());
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -241,7 +251,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 		attributeGetterFunctions.put("roomId", Rooms::getRoomId);
 		attributeSetterBiConsumers.put(
-			"roomId", (BiConsumer<Rooms, Integer>)Rooms::setRoomId);
+			"roomId", (BiConsumer<Rooms, Long>)Rooms::setRoomId);
 		attributeGetterFunctions.put("roomTypeId", Rooms::getRoomTypeId);
 		attributeSetterBiConsumers.put(
 			"roomTypeId", (BiConsumer<Rooms, Integer>)Rooms::setRoomTypeId);
@@ -251,6 +261,9 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 		attributeGetterFunctions.put("roomName", Rooms::getRoomName);
 		attributeSetterBiConsumers.put(
 			"roomName", (BiConsumer<Rooms, String>)Rooms::setRoomName);
+		attributeGetterFunctions.put("price", Rooms::getPrice);
+		attributeSetterBiConsumers.put(
+			"price", (BiConsumer<Rooms, Integer>)Rooms::setPrice);
 		attributeGetterFunctions.put(
 			"totalRoomsAvailable", Rooms::getTotalRoomsAvailable);
 		attributeSetterBiConsumers.put(
@@ -276,12 +289,12 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	}
 
 	@Override
-	public int getRoomId() {
+	public long getRoomId() {
 		return _roomId;
 	}
 
 	@Override
-	public void setRoomId(int roomId) {
+	public void setRoomId(long roomId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -334,6 +347,29 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 		}
 
 		_roomName = roomName;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalRoomName() {
+		return getColumnOriginalValue("roomName");
+	}
+
+	@Override
+	public int getPrice() {
+		return _price;
+	}
+
+	@Override
+	public void setPrice(int price) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_price = price;
 	}
 
 	@Override
@@ -441,6 +477,19 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			0, Rooms.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
 	public Rooms toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, Rooms>
@@ -463,6 +512,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 		roomsImpl.setRoomTypeId(getRoomTypeId());
 		roomsImpl.setAmenitiesId(getAmenitiesId());
 		roomsImpl.setRoomName(getRoomName());
+		roomsImpl.setPrice(getPrice());
 		roomsImpl.setTotalRoomsAvailable(getTotalRoomsAvailable());
 		roomsImpl.setCreateDate(getCreateDate());
 		roomsImpl.setCreateBy(getCreateBy());
@@ -476,7 +526,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 	@Override
 	public int compareTo(Rooms rooms) {
-		int primaryKey = rooms.getPrimaryKey();
+		long primaryKey = rooms.getPrimaryKey();
 
 		if (getPrimaryKey() < primaryKey) {
 			return -1;
@@ -501,7 +551,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 		Rooms rooms = (Rooms)object;
 
-		int primaryKey = rooms.getPrimaryKey();
+		long primaryKey = rooms.getPrimaryKey();
 
 		if (getPrimaryKey() == primaryKey) {
 			return true;
@@ -513,7 +563,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey();
+		return (int)getPrimaryKey();
 	}
 
 	/**
@@ -558,6 +608,8 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 		if ((roomName != null) && (roomName.length() == 0)) {
 			roomsCacheModel.roomName = null;
 		}
+
+		roomsCacheModel.price = getPrice();
 
 		roomsCacheModel.totalRoomsAvailable = getTotalRoomsAvailable();
 
@@ -683,10 +735,11 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 	}
 
-	private int _roomId;
+	private long _roomId;
 	private int _roomTypeId;
 	private int _amenitiesId;
 	private String _roomName;
+	private int _price;
 	private int _totalRoomsAvailable;
 	private Date _createDate;
 	private String _createBy;
@@ -724,6 +777,7 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 		_columnOriginalValues.put("roomTypeId", _roomTypeId);
 		_columnOriginalValues.put("amenitiesId", _amenitiesId);
 		_columnOriginalValues.put("roomName", _roomName);
+		_columnOriginalValues.put("price", _price);
 		_columnOriginalValues.put("totalRoomsAvailable", _totalRoomsAvailable);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("createBy", _createBy);
@@ -750,15 +804,17 @@ public class RoomsModelImpl extends BaseModelImpl<Rooms> implements RoomsModel {
 
 		columnBitmasks.put("roomName", 8L);
 
-		columnBitmasks.put("totalRoomsAvailable", 16L);
+		columnBitmasks.put("price", 16L);
 
-		columnBitmasks.put("createDate", 32L);
+		columnBitmasks.put("totalRoomsAvailable", 32L);
 
-		columnBitmasks.put("createBy", 64L);
+		columnBitmasks.put("createDate", 64L);
 
-		columnBitmasks.put("updateDate", 128L);
+		columnBitmasks.put("createBy", 128L);
 
-		columnBitmasks.put("updatedBy", 256L);
+		columnBitmasks.put("updateDate", 256L);
+
+		columnBitmasks.put("updatedBy", 512L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

@@ -73,13 +73,11 @@ public class RoomTypeLocalServiceUtil {
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
-	public static RoomType createRoomType(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK) {
-
-		return getService().createRoomType(roomTypePK);
+	public static RoomType createRoomType(long roomTypeId) {
+		return getService().createRoomType(roomTypeId);
 	}
 
 	/**
@@ -90,6 +88,23 @@ public class RoomTypeLocalServiceUtil {
 		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
+	}
+
+	/**
+	 * Deletes the room type with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect RoomTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param roomTypeId the primary key of the room type
+	 * @return the room type that was removed
+	 * @throws PortalException if a room type with the primary key could not be found
+	 */
+	public static RoomType deleteRoomType(long roomTypeId)
+		throws PortalException {
+
+		return getService().deleteRoomType(roomTypeId);
 	}
 
 	/**
@@ -104,24 +119,6 @@ public class RoomTypeLocalServiceUtil {
 	 */
 	public static RoomType deleteRoomType(RoomType roomType) {
 		return getService().deleteRoomType(roomType);
-	}
-
-	/**
-	 * Deletes the room type with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * <p>
-	 * <strong>Important:</strong> Inspect RoomTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
-	 * </p>
-	 *
-	 * @param roomTypePK the primary key of the room type
-	 * @return the room type that was removed
-	 * @throws PortalException if a room type with the primary key could not be found
-	 */
-	public static RoomType deleteRoomType(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
-		throws PortalException {
-
-		return getService().deleteRoomType(roomTypePK);
 	}
 
 	public static DynamicQuery dynamicQuery() {
@@ -201,10 +198,8 @@ public class RoomTypeLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static RoomType fetchRoomType(
-		ROOMSERVICES.service.persistence.RoomTypePK roomTypePK) {
-
-		return getService().fetchRoomType(roomTypePK);
+	public static RoomType fetchRoomType(long roomTypeId) {
+		return getService().fetchRoomType(roomTypeId);
 	}
 
 	public static List<RoomType> findByroomType(String RoomType)
@@ -247,15 +242,12 @@ public class RoomTypeLocalServiceUtil {
 	/**
 	 * Returns the room type with the primary key.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws PortalException if a room type with the primary key could not be found
 	 */
-	public static RoomType getRoomType(
-			ROOMSERVICES.service.persistence.RoomTypePK roomTypePK)
-		throws PortalException {
-
-		return getService().getRoomType(roomTypePK);
+	public static RoomType getRoomType(long roomTypeId) throws PortalException {
+		return getService().getRoomType(roomTypeId);
 	}
 
 	/**

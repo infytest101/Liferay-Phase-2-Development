@@ -14,19 +14,15 @@
 
 package ROOMSERVICES.service.impl;
 
-import ROOMSERVICES.service.base.BookingDetailsLocalServiceBaseImpl;
+import org.osgi.service.component.annotations.Component;
 
 import com.liferay.portal.aop.AopService;
 
-import org.osgi.service.component.annotations.Component;
+import ROOMSERVICES.service.base.BookingDetailsLocalServiceBaseImpl;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(
-	property = "model.class.name=ROOMSERVICES.model.BookingDetails",
-	service = AopService.class
-)
-public class BookingDetailsLocalServiceImpl
-	extends BookingDetailsLocalServiceBaseImpl {
+@Component(property = "model.class.name=ROOMSERVICES.model.BookingDetails", service = AopService.class)
+public class BookingDetailsLocalServiceImpl extends BookingDetailsLocalServiceBaseImpl {
 }

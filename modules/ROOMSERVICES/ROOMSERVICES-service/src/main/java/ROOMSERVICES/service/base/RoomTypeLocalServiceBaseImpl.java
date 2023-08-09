@@ -21,7 +21,6 @@ import ROOMSERVICES.service.RoomTypeLocalServiceUtil;
 import ROOMSERVICES.service.persistence.AmenitiesPersistence;
 import ROOMSERVICES.service.persistence.BookingDetailsPersistence;
 import ROOMSERVICES.service.persistence.CustomerPersistence;
-import ROOMSERVICES.service.persistence.RoomTypePK;
 import ROOMSERVICES.service.persistence.RoomTypePersistence;
 import ROOMSERVICES.service.persistence.RoomsPersistence;
 
@@ -102,13 +101,13 @@ public abstract class RoomTypeLocalServiceBaseImpl
 	/**
 	 * Creates a new room type with the primary key. Does not add the room type to the database.
 	 *
-	 * @param roomTypePK the primary key for the new room type
+	 * @param roomTypeId the primary key for the new room type
 	 * @return the new room type
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public RoomType createRoomType(RoomTypePK roomTypePK) {
-		return roomTypePersistence.create(roomTypePK);
+	public RoomType createRoomType(long roomTypeId) {
+		return roomTypePersistence.create(roomTypeId);
 	}
 
 	/**
@@ -118,16 +117,14 @@ public abstract class RoomTypeLocalServiceBaseImpl
 	 * <strong>Important:</strong> Inspect RoomTypeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type that was removed
 	 * @throws PortalException if a room type with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public RoomType deleteRoomType(RoomTypePK roomTypePK)
-		throws PortalException {
-
-		return roomTypePersistence.remove(roomTypePK);
+	public RoomType deleteRoomType(long roomTypeId) throws PortalException {
+		return roomTypePersistence.remove(roomTypeId);
 	}
 
 	/**
@@ -234,20 +231,20 @@ public abstract class RoomTypeLocalServiceBaseImpl
 	}
 
 	@Override
-	public RoomType fetchRoomType(RoomTypePK roomTypePK) {
-		return roomTypePersistence.fetchByPrimaryKey(roomTypePK);
+	public RoomType fetchRoomType(long roomTypeId) {
+		return roomTypePersistence.fetchByPrimaryKey(roomTypeId);
 	}
 
 	/**
 	 * Returns the room type with the primary key.
 	 *
-	 * @param roomTypePK the primary key of the room type
+	 * @param roomTypeId the primary key of the room type
 	 * @return the room type
 	 * @throws PortalException if a room type with the primary key could not be found
 	 */
 	@Override
-	public RoomType getRoomType(RoomTypePK roomTypePK) throws PortalException {
-		return roomTypePersistence.findByPrimaryKey(roomTypePK);
+	public RoomType getRoomType(long roomTypeId) throws PortalException {
+		return roomTypePersistence.findByPrimaryKey(roomTypeId);
 	}
 
 	@Override
@@ -259,8 +256,7 @@ public abstract class RoomTypeLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(RoomType.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName(
-			"primaryKey.roomTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("roomTypeId");
 
 		return actionableDynamicQuery;
 	}
@@ -277,8 +273,7 @@ public abstract class RoomTypeLocalServiceBaseImpl
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(RoomType.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
-			"primaryKey.roomTypeId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("roomTypeId");
 
 		return indexableActionableDynamicQuery;
 	}
@@ -290,8 +285,7 @@ public abstract class RoomTypeLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(RoomType.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName(
-			"primaryKey.roomTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("roomTypeId");
 	}
 
 	/**
@@ -300,7 +294,7 @@ public abstract class RoomTypeLocalServiceBaseImpl
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
 
-		return roomTypePersistence.create((RoomTypePK)primaryKeyObj);
+		return roomTypePersistence.create(((Long)primaryKeyObj).longValue());
 	}
 
 	/**

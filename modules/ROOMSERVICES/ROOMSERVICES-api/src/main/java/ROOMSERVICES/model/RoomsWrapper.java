@@ -45,6 +45,7 @@ public class RoomsWrapper
 		attributes.put("roomTypeId", getRoomTypeId());
 		attributes.put("amenitiesId", getAmenitiesId());
 		attributes.put("roomName", getRoomName());
+		attributes.put("price", getPrice());
 		attributes.put("totalRoomsAvailable", getTotalRoomsAvailable());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("createBy", getCreateBy());
@@ -56,7 +57,7 @@ public class RoomsWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Integer roomId = (Integer)attributes.get("roomId");
+		Long roomId = (Long)attributes.get("roomId");
 
 		if (roomId != null) {
 			setRoomId(roomId);
@@ -78,6 +79,12 @@ public class RoomsWrapper
 
 		if (roomName != null) {
 			setRoomName(roomName);
+		}
+
+		Integer price = (Integer)attributes.get("price");
+
+		if (price != null) {
+			setPrice(price);
 		}
 
 		Integer totalRoomsAvailable = (Integer)attributes.get(
@@ -143,12 +150,22 @@ public class RoomsWrapper
 	}
 
 	/**
+	 * Returns the price of this rooms.
+	 *
+	 * @return the price of this rooms
+	 */
+	@Override
+	public int getPrice() {
+		return model.getPrice();
+	}
+
+	/**
 	 * Returns the primary key of this rooms.
 	 *
 	 * @return the primary key of this rooms
 	 */
 	@Override
-	public int getPrimaryKey() {
+	public long getPrimaryKey() {
 		return model.getPrimaryKey();
 	}
 
@@ -158,7 +175,7 @@ public class RoomsWrapper
 	 * @return the room ID of this rooms
 	 */
 	@Override
-	public int getRoomId() {
+	public long getRoomId() {
 		return model.getRoomId();
 	}
 
@@ -248,12 +265,22 @@ public class RoomsWrapper
 	}
 
 	/**
+	 * Sets the price of this rooms.
+	 *
+	 * @param price the price of this rooms
+	 */
+	@Override
+	public void setPrice(int price) {
+		model.setPrice(price);
+	}
+
+	/**
 	 * Sets the primary key of this rooms.
 	 *
 	 * @param primaryKey the primary key of this rooms
 	 */
 	@Override
-	public void setPrimaryKey(int primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
 	}
 
@@ -263,7 +290,7 @@ public class RoomsWrapper
 	 * @param roomId the room ID of this rooms
 	 */
 	@Override
-	public void setRoomId(int roomId) {
+	public void setRoomId(long roomId) {
 		model.setRoomId(roomId);
 	}
 
