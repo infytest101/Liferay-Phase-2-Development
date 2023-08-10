@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -31,6 +33,7 @@ public class ViewRoomRecord {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				JSONArray jsonArray=JSONFactoryUtil.createJSONArray();
 				RoomPriceTypeDto rpto = new RoomPriceTypeDto();
 				/* String rooname1="\"" + rpto.getRoomName() + "\""; */
 				rpto.setId(data.getRoomId());

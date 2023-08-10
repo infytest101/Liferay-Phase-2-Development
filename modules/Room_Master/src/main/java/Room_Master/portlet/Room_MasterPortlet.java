@@ -3,6 +3,7 @@ package Room_Master.portlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.portlet.PortletException;
 import javax.portlet.ProcessAction;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -25,7 +27,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -56,7 +60,6 @@ public class Room_MasterPortlet extends MVCPortlet {
 	public void doView(RenderRequest renderRequest, RenderResponse renderResponse)
 			throws IOException, PortletException {
 
-		String page = renderRequest.getParameter("page");
 		LOGGER.info("inside doView method..!!:");
 
 		ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -78,7 +81,12 @@ public class Room_MasterPortlet extends MVCPortlet {
 
 				// TODO :: Call or set attribute w.r.t. add/update room
 				
-				viewName = setAddUpdateRoomAttributes(renderRequest);
+				try {
+					viewName = setAddUpdateRoomAttributes(renderRequest);
+				} catch (PortalException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			} else if (currentURL.contains("/hotel-mngt-home")) {
 
@@ -99,11 +107,27 @@ public class Room_MasterPortlet extends MVCPortlet {
 		super.doView(renderRequest, renderResponse);
 	}
 
-	private String setAddUpdateRoomAttributes(RenderRequest renderRequest) {
+	private String setAddUpdateRoomAttributes(RenderRequest renderRequest) throws PortalException {
 
 		LOGGER.info("inside setAddUpdateRoomAttributes method..!!:");
-		renderRequest.setAttribute("roomid", "1");
-
+		
+		final HttpServletRequest httpServletRequest = PortalUtil.getOriginalServletRequest(
+                        							  PortalUtil.getHttpServletRequest(renderRequest));
+        final long roomId = GetterUtil.getInteger(httpServletRequest
+        										.getParameter("roomId"), -1);
+        
+		LOGGER.info("roomId :: " + roomId);
+		if(roomId>0) {
+		Rooms room = RoomsLocalServiceUtil.fetchRooms(roomId);
+		int amenitiesId=room.getAmenitiesId();
+		int roomTypeId=room.getRoomTypeId();
+		RoomType roomtype=RoomTypeLocalServiceUtil.getRoomType(roomTypeId);
+		Amenities amenities=AmenitiesLocalServiceUtil.getAmenities(amenitiesId);
+		renderRequest.setAttribute("room", room);
+		renderRequest.setAttribute("roomName", Base64.getEncoder().encodeToString(room.getRoomName().getBytes()));
+		renderRequest.setAttribute("amenities", amenities);
+		renderRequest.setAttribute("roomtypedata", roomtype.getRoomType());
+		}
 		return "/META-INF/resources/rooms/addUpdateRoom.jsp";
 
 	}
@@ -177,11 +201,13 @@ public class Room_MasterPortlet extends MVCPortlet {
 		
 		
 		if(roomid>0) {
+			
 			 room = RoomsLocalServiceUtil.getRooms(roomid);
 			 amenitiesId= room.getAmenitiesId();
 			 amenities = AmenitiesLocalServiceUtil.getAmenities(amenitiesId);
 		}
 		else {
+			
 			 roomId = CounterLocalServiceUtil.increment(Rooms.class.getName());
 			 amenitiesId = CounterLocalServiceUtil.increment(Amenities.class.getName());
 			 room = RoomsLocalServiceUtil.createRooms(roomId);
