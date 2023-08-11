@@ -1,6 +1,12 @@
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
+
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+
+<portlet:defineObjects/>
 
 <style>
 	table {
@@ -245,7 +251,7 @@
 			roomId= id.split(',')[0];
 			roomtype=id.split(',')[1];
 			'<p><b>EDIT</b></p>'
-			window.href="/editRoom.jsp";
+			location.href='/add-or-update-room?roomId='+ encodeURIComponent(roomId);
 		}
 		
 		if (action == 'DELETE') {
