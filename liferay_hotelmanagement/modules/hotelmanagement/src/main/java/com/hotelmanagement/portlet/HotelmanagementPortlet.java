@@ -1,6 +1,7 @@
 package com.hotelmanagement.portlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,9 @@ import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -23,7 +27,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -99,8 +105,12 @@ public class HotelmanagementPortlet extends MVCPortlet {
 		}
 		
 		if(currentURL.contains("/add-or-update-room?roomId")) {
-			Integer roomId= Integer.valueOf(currentURL.split("=")[1]);
-			_LOG.info("roomId ::: " + roomId);
+//			Integer roomId= Integer.valueOf(currentURL.split("=")[1]);
+//			_LOG.info("roomId ::: " + roomId);
+			
+			final HttpServletRequest httpServletRequest = PortalUtil
+					.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest));
+			final int roomId = GetterUtil.getInteger(httpServletRequest.getParameter("roomId"), -1);
 			
 			Rooms room = RoomsLocalServiceUtil.fetchRooms(roomId);
 			List<String> beforeEditData = new ArrayList<String>();
@@ -180,12 +190,22 @@ public class HotelmanagementPortlet extends MVCPortlet {
 	@Override
 	public void processAction(ActionRequest actionRequest, ActionResponse actionResponse)
 			throws IOException, PortletException {
-		String action = ParamUtil.getString(actionRequest, "action");
+		String dataJSON = actionRequest.getParameter("data");
 		
-		if("Update Room".equals(action)) {
-			int totalRoomsAvailable = ParamUtil.getInteger(actionRequest, "totalRoomsAvailable");
-		}
 		super.processAction(actionRequest, actionResponse);
+	}
+	
+	@Override
+	public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+			throws IOException, PortletException {
+		if (resourceRequest.getResourceID().equals("updateRoom")) {
+			String data = ParamUtil.getString(resourceRequest, "roomType");
+            
+			PrintWriter writer = resourceResponse.getWriter();
+			writer.write("Data updated successfully");
+			writer.flush();
+		}
+		super.serveResource(resourceRequest, resourceResponse);
 	}
 	
 }
