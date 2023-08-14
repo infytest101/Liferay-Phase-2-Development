@@ -84,6 +84,12 @@
 
 	</tbody>
 </table>
+<br>
+
+<div style="text-align: left; margin-left: 45px;">
+	<button id="addRoom"
+		style="width: 100px; height: 30px; background-color: #e6e6ff;">Add Room</button>
+</div>
 
 <script type="text/javascript">
     var roomDetails = ${roomDetails};
@@ -163,6 +169,10 @@
             }
     	 });
         }
+    	
+    	$('#addRoom').click(function() {
+    		location.href='/add-or-update-room?roomId='+ encodeURIComponent(-1);
+		});
     });
     
     function actionHandler(value){

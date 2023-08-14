@@ -11,6 +11,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -112,10 +113,17 @@ public class HotelmanagementPortlet extends MVCPortlet {
 					.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest));
 			final int roomId = GetterUtil.getInteger(httpServletRequest.getParameter("roomId"), -1);
 			
+			if(roomId!=-1) {
+				
 			Rooms room = RoomsLocalServiceUtil.fetchRooms(roomId);
-			List<String> beforeEditData = new ArrayList<String>();
-			getRoomData(roomTypeMap, beforeEditData, room);
-			renderRequest.setAttribute("beforeEditData", beforeEditData);
+			Amenities amenities = AmenitiesLocalServiceUtil.fetchAmenities(room.getAmenitiesId());
+			RoomType roomType = RoomTypeLocalServiceUtil.fetchRoomType(room.getRoomTypeId());
+			
+			renderRequest.setAttribute("room", room);
+			renderRequest.setAttribute("amenities", amenities);
+			renderRequest.setAttribute("roomType", roomType);
+			
+			}
 			navigate = "/META-INF/resources/editRoom.jsp";
 			
 			include(navigate, renderRequest, renderResponse);
@@ -190,22 +198,90 @@ public class HotelmanagementPortlet extends MVCPortlet {
 	@Override
 	public void processAction(ActionRequest actionRequest, ActionResponse actionResponse)
 			throws IOException, PortletException {
-		String dataJSON = actionRequest.getParameter("data");
-		
+		String action = ParamUtil.getString(actionRequest, "action");
+
+		if ("submitForm".equals(action)) {
+			String price = ParamUtil.getString(actionRequest, "price");
+			String roomType = ParamUtil.getString(actionRequest, "roomType");
+			Boolean isACAvailable = ParamUtil.getBoolean(actionRequest, "isACAvailable");
+			Boolean isNonACAvailable = ParamUtil.getBoolean(actionRequest, "isNonACAvailable");
+			String errorMessagePrice = StringPool.BLANK;
+			String errorMessageRoomType = StringPool.BLANK;
+			String errorMessageAC = StringPool.BLANK;
+			
+			if(price.isEmpty()) {
+				errorMessagePrice = "Please enter the price.";
+			}
+            if(roomType.isEmpty()) {
+				errorMessageRoomType = "Please enter the room type.";
+			}
+            if(!isACAvailable || !isNonACAvailable) {
+            	errorMessageAC = "Please select atleast AC or Non AC";
+            }
+            actionRequest.setAttribute("errorMessagePrice", errorMessagePrice);
+            actionRequest.setAttribute("errorMessageRoomType", errorMessageRoomType);
+            actionRequest.setAttribute("errorMessageAC", errorMessageAC);
+            
+            final HttpServletRequest httpServletRequest = PortalUtil
+					.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest));
+			final int roomId = GetterUtil.getInteger(httpServletRequest.getParameter("roomId"), -1);
+			
+			if(roomId!=-1) {
+				
+			Rooms room = RoomsLocalServiceUtil.fetchRooms(roomId);
+			Amenities amenities = AmenitiesLocalServiceUtil.fetchAmenities(room.getAmenitiesId());
+			RoomType roomTypes = RoomTypeLocalServiceUtil.fetchRoomType(room.getRoomTypeId());
+			room.setPrice(Integer.valueOf(price));
+			roomTypes.setRoomType(roomType);
+			
+			actionRequest.setAttribute("room", room);
+			actionRequest.setAttribute("amenities", amenities);
+			actionRequest.setAttribute("roomType", roomTypes);
+			
+			}
+			include("/META-INF/resources/editRoom.jsp", actionRequest, actionResponse);
+			return;
+            
+		}
+
 		super.processAction(actionRequest, actionResponse);
 	}
 	
 	@Override
-	public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
 			throws IOException, PortletException {
-		if (resourceRequest.getResourceID().equals("updateRoom")) {
-			String data = ParamUtil.getString(resourceRequest, "roomType");
-            
-			PrintWriter writer = resourceResponse.getWriter();
-			writer.write("Data updated successfully");
-			writer.flush();
+		String action = ParamUtil.getString(renderRequest, "action");
+
+		if ("submitForm".equals(action)) {
+			String price = ParamUtil.getString(renderRequest, "price");
+			String roomTypes = ParamUtil.getString(renderRequest, "roomType");
+			Boolean isACAvailable = ParamUtil.getBoolean(renderRequest, "isACAvailable");
+			Boolean isNonACAvailable = ParamUtil.getBoolean(renderRequest, "isNonACAvailable");
+
+			renderRequest.setAttribute("price", price);
+			renderRequest.setAttribute("roomType", roomTypes);
+			final HttpServletRequest httpServletRequest = PortalUtil
+					.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest));
+			final int roomId = GetterUtil.getInteger(httpServletRequest.getParameter("roomId"), -1);
+			
+			if(roomId!=-1) {
+				
+			Rooms room = RoomsLocalServiceUtil.fetchRooms(roomId);
+			Amenities amenities = AmenitiesLocalServiceUtil.fetchAmenities(room.getAmenitiesId());
+			RoomType roomType = RoomTypeLocalServiceUtil.fetchRoomType(room.getRoomTypeId());
+			room.setPrice(Integer.valueOf(price));
+			roomType.setRoomType(roomTypes);
+			
+			renderRequest.setAttribute("room", room);
+			renderRequest.setAttribute("amenities", amenities);
+			renderRequest.setAttribute("roomType", roomType);
+			
+			}
+			include("/META-INF/resources/editRoom.jsp", renderRequest, renderResponse);
+			return;
 		}
-		super.serveResource(resourceRequest, resourceResponse);
+
+		super.render(renderRequest, renderResponse);
 	}
-	
+
 }

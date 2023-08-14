@@ -20,15 +20,19 @@
 
 <h2>Update Room Details</h2>
 
-<form id="roomForm">
+<portlet:actionURL var="submitFormURL">
+<portlet:param name="action" value="submitForm" />
+</portlet:actionURL>
 
+<aui:form action="<%= submitFormURL %>" method="post">
 	<table>
 		<tr>
 			<td><label for="roomType">Room Type</label></td>
 			<td><label>:</label></td>
-			<td><select id="roomType" name="roomType"
-				style="width: 250px; height: 40px;">
-			</select></td>
+			<td>
+			  <select id="roomType" name="<portlet:namespace/>roomType" style="width: 250px; height: 40px;"></select>
+			  <span class = "error-message">${errorMessageRoomType}</span>
+			</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -38,8 +42,9 @@
 		<tr>
 			<td><label>Price</label></td>
 			<td><label>:</label></td>
-			<td><input type="number" min="0" id="price" name= "<portlet:namespace/>price" 
-				style="width: 250px; height: 40px;" required></td>
+			<td><input type="number"  name= "<portlet:namespace/>price"  id="price"  value=${room.price} min="0" max="25000"/>
+			 <span class = "error-message">${errorMessagePrice}</span>
+			 </td>
 		</tr>
 		<tr>
 			<td></td>
@@ -73,33 +78,36 @@
 				<label>:</label><br></td>
 			<td><br> <br>
 				<div>
-					<input type="radio" id="ac" name="acNonAc" value="AC" required>
+					<input type="radio" id="ac" name="<portlet:namespace/>isACAvailable" ${amenities.isACAvailable  == 'true' ? 'checked' : ''}>
 					<label for="ac">AC</label>
 				</div>
 				<div>
-					<input type="radio" id="non-ac" name="acNonAc" value="Non-AC"
-						required> <label for="non-ac">Non-AC</label>
-				</div> <br>
+					<input type="radio" id="non-ac" name="<portlet:namespace/>isNonACAvailable" ${amenities.isACAvailable  == 'false' ? 'checked' : ''}> 
+					<label for="non-ac">Non-AC</label>
+				</div> 
+				 <span class = "error-message">${errorMessageAC}</span>
+				 <br>
 				<div>
-					<input type="radio" id="smoking" name="smokingNonSmoking"
-						value="Smoking" required> <label for="smoking">Smoking</label>
+					<input type="radio" id="smoking" name="<portlet:namespace/>isSmokingAvailable" ${amenities.isSmokingAvailable  == 'true' ? 'checked' : ''}> 
+					<label for="smoking">Smoking</label>
 				</div>
 				<div>
-					<input type="radio" id="non-smoking" name="smokingNonSmoking"
-						value="Non-Smoking" required> <label for="non-smoking">Non-Smoking</label>
+					<input type="radio" id="non-smoking" name="<portlet:namespace/>isNonSmokingAvailable" ${amenities.isSmokingAvailable  == 'false' ? 'checked' : ''}> 
+					<label for="non-smoking">Non-Smoking</label>
 				</div> <br>
 				<div>
-					<input type="checkbox" id="wifi" name="wi-fi/tv/geyser"
-						value="WI-FI"> <label for="wifi">WI-FI</label>
+					<input type="checkbox" id="wifi" name="<portlet:namespace/>isWifiAvailable " ${amenities.isWifiAvailable  == 'true' ? 'checked' : ''}> 
+					<label for="wifi">WI-FI</label>
 				</div>
 				<div>
-					<input type="checkbox" id="tv" name="wi-fi/tv/geyser" value="TV">
+					<input type="checkbox" id="tv" name="<portlet:namespace/>isTVAvailable " ${amenities.isTVAvailable  == 'true' ? 'checked' : ''}>
 					<label for="tv">TV</label>
 				</div>
 				<div>
-					<input type="checkbox" id="geyser" name="wi-fi/tv/geyser" value="Geyser"> 
+					<input type="checkbox" id="geyser" name="<portlet:namespace/>isGeyserAvailable" ${amenities.isGeyserAvailable == 'true' ? 'checked' : ''}> 
 					<label for="geyser">Geyser</label>
 				</div></td>
+
 		</tr>
 		<tr>
 			<td></td>
@@ -109,157 +117,53 @@
 		<tr>
 			<td><label>Total Room Available</label></td>
 			<td><label>:</label></td>
-			<td><input type="number" min="0" id="totalRoomAvailable"
-				name="totalRoomAvailable" style="width: 250px; height: 40px;">
+			<td>
+			  <input type="number"  name= "totalRoomAvailable"  id="totalRoomAvailable"  value=${room.totalRoomsAvailable} min="0" max="25000"/>
 			</td>
 		</tr>
 
 	</table>
 
 	<br>
+    <input type="text" value=${room.roomId} name="<portlet:namespace/>roomId" id=roomId style="display: none;">
 	
 	<div style="text-align: left; margin-left: 45px;">
-		<input type="submit" value="Update Room" name="action" id=updateRoom;
-			style="width: 100px; height: 30px; background-color: white;">
+		<input type="submit" value="Update Room" name="action" id=updateRoom;>
+		<input type="submit" value="Add Room" name="action" id=addRoom;>
 	</div>
-
-</form>
+</aui:form>
 
 <script type="text/javascript">
-	var beforeEditData = ${beforeEditData};
-    var roomId;
-	$(document).ready(function() {
-				var roomTypeNames = $
-				{
-					roomTypeNames
+
+	var roomType = ${roomType};
+	var room = ${room};
+	var roomId;
+	
+	$(document).ready(
+			function() {
+				if(${room.roomId}>0){
+					  $("#updateRoom").show();
 				}
-				;
+				else{ 
+					 $("#addRoom").show();
+				}
+				var roomTypeNames = ${roomTypeNames};
 				var roomTypeNamesArray = [];
 
-				$.each(beforeEditData, function(key, value) {
-                    
-					roomId = value[0].roomId;
-					roomType = value[0].roomType;
+				roomId = room.roomId;
+				roomType = roomType.RoomType;
 
-					$('#roomType').append(
-							'<option selected="selected" value="'+roomType+'">'
-									+ roomType + '</option>');
+				$('#roomType').append(
+						'<option selected="selected" value="'+roomType+'">'
+								+ roomType + '</option>');
 
-					$('#price').val(value[0].price);
-					if (value[0].isACAvailable === true)
-						$('#ac').prop('checked', true);
-					else
-						$('#non-ac').prop('checked', true);
-
-					if (value[0].isSmokingAvailable === true)
-						$('#smoking').prop('checked', true);
-					else
-						$('#non-smoking').prop('checked', true);
-
-					if (value[0].isWifiAvailable == true) {
-						$('#wifi').prop('checked', true);
-					}
-
-					if (value[0].isTVAvailable == true) {
-						$('#tv').prop('checked', true);
-					}
-
-					if (value[0].isGeyserAvailable == true) {
-						$('#geyser').prop('checked', true);
-					}
-					$('#totalRoomAvailable').val(value[0].totalRoomsAvailable);
-
-				});
-
-				var roomTypeNames = $
-				{
-					roomTypeNames
-				}
-				;
-				$.each(roomTypeNames, function(index, data) {
-					if (data.RoomType != roomType) {
+				$.each(roomTypeNames, function(key, value) {
+					if (value.RoomType != roomType) {
 						$('#roomType').append(
-								'<option value="'+data.RoomType +'">'
-										+ data.RoomType + '</option>');
+								'<option value="'+value.RoomType +'">'
+										+ value.RoomType + '</option>');
 					}
 				})
 
-		$('#roomForm').submit(function(event){
-				event.preventDefault();
-				var roomType=$('#roomType').val();
-				var price=$('#price').val();
-				var acOrNonAC;
-				var smokingOrNonSmoking;
-				let amenities;
-				if($('#ac').is(':checked')==true){
-					acOrNonAC="AC";
-				}
-				else{
-					acOrNonAC="Non-AC";
-				}
-				if($('#smoking').is(':checked')==true){
-					smokingOrNonSmoking ="Smoking";
-				}
-				else{
-					smokingOrNonSmoking ="Non-Smoking";
-				}
-				
-				if($('#wifi').is(':checked')==true){
-					wifiTvGeyser="WIFI";
-				}
-				if($('#tv').is(':checked')==true){
-					if(amenities!=null){
-						amenities=amenities+","+"Tv";
-					}
-					else{
-						amenities="Tv";
-					}
-					
-				}
-				if($('#geyser').is(':checked')==true){
-					if(amenities!=null){
-						amenities=amenities+","+"Geyser";
-					}
-					else{
-						amenities="Geyser";
-					}
-				}
-				var totalRoomAvailable =$('#totalRoomAvailable').val();
-				var data=[];
-				data.push({
-				    	"roomId":roomId,
-				    	"roomType":roomType,
-				        "price": price,
-				        "smokingOrNonSmoking": smokingOrNonSmoking,
-				        "acOrNonAC": acOrNonAC,
-				        "amenities":amenities,
-				        "totalRoomAvailable":totalRoomAvailable
-				    });	
-		
-				var xhr = new XMLHttpRequest();
-				xhr.open("POST", '<%= renderResponse.createActionURL() %>', true);
-				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-				xhr.send("data=" + encodeURIComponent(JSON.stringify(data)));
-				
-		$.ajax({
-			url : "<portlet:actionURL id='updateRoom'/>",
-			method : 'POST',
-			data : JSON.stringfy(data),
-			dataType:"json",
-			success : function(res) {
-				if(res=='Data updated successfully'){
-					console.log(res);
-				} else {
-					
-				}
-			},
-			error: function(xhr){
-				
-		    }
-		
-		});	
-				
-		  });
-		  
-	});
+			});
 </script>
